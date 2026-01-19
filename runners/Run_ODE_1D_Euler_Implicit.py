@@ -198,7 +198,7 @@ def main():
     plt.grid(True, linestyle='--', alpha=0.7)
     plt.legend()
     
-    img_filename = 'graph_ODE_1D_Euler_Implicit.png'
+    img_filename = os.path.join(output_dir, 'graph_ODE_1D_Euler_Implicit.png')
     plt.savefig(img_filename)
     console.print(f"[bold green]✔ Đã lưu đồ thị vào file: {img_filename}[/bold green]")
     # plt.show() # Bỏ comment nếu muốn hiện cửa sổ đồ thị
