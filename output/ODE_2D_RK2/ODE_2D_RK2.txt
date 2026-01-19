@@ -1,0 +1,73 @@
+╭──────── Đề bài ─────────╮
+│                         │
+│     Hệ phương trình:    │
+│       dx/dt = f(t, x,   │
+│ y)                      │
+│       dy/dt = g(t, x,   │
+│ y)                      │
+│                         │
+│     Khoảng tính toán:   │
+│ [0.0, 2.0]              │
+│     Bước nhảy h: 0.1    │
+│     Điều kiện đầu: t0 = │
+│ 0.0, x0 = 1.0, y0 = 0.0 │
+│                         │
+╰─────────────────────────╯
+
+Áp dụng ODE_2D_RK2 Ta có:
+╭─ Công thức (Heun Method─╮
+│                         │
+│     k1_x = f(t, x, y)   │
+│     k1_y = g(t, x, y)   │
+│                         │
+│     x_pred = x + h *    │
+│ k1_x                    │
+│     y_pred = y + h *    │
+│ k1_y                    │
+│                         │
+│     k2_x = f(t + h,     │
+│ x_pred, y_pred)         │
+│     k2_y = g(t + h,     │
+│ x_pred, y_pred)         │
+│                         │
+│     x_{n+1} = x_n + (h  │
+│ / 2) * (k1_x + k2_x)    │
+│     y_{n+1} = y_n + (h  │
+│ / 2) * (k1_y + k2_y)    │
+│                         │
+╰─────────────────────────╯
+
+Bảng giá trị
+┏━━┳━━┳━━┳━━┳━━┳━━━┳━━┳━━━┓
+┃  ┃  ┃  ┃  ┃  ┃ … ┃  ┃ … ┃
+┡━━╇━━╇━━╇━━╇━━╇━━━╇━━╇━━━┩
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ … │  │ … │
+│  │  │  │  │  │ - │  │ - │
+└──┴──┴──┴──┴──┴───┴──┴───┘
+
+Đã xuất file 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_RK
+2/ODE_2D_RK2.csv
+Đã xuất file 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_RK
+2/ODE_2D_RK2_Phase.csv
+Đã lưu đồ thị 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_RK
+2/graph_ODE_2D_RK2.png
+Đã lưu đồ thị 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_RK
+2/graph_ODE_2D_RK2_Phase.pn
+g

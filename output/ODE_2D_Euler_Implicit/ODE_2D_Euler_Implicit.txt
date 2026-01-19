@@ -1,0 +1,67 @@
+╭─ Đề bài ────────────────╮
+│ Hệ phương trình: x' =   │
+│ f(t,x,y), y' = g(t,x,y) │
+│ Khoảng thời gian: [0.0, │
+│ 5.0]                    │
+│ Bước nhảy h: 0.1        │
+│ Điều kiện đầu:          │
+│ x(0.0)=1.0, y(0.0)=0.0  │
+╰─────────────────────────╯
+
+Áp dụng 
+ODE_2D_Euler_Implicit Ta 
+có:
+╭─────────────────────────╮
+│ Hệ phương trình sai     │
+│ phân (Euler Ẩn):        │
+│   t_{n+1} = t_n + h     │
+│   x_{n+1} = x_n + h *   │
+│ f(t_{n+1}, x_{n+1},     │
+│ y_{n+1})                │
+│   y_{n+1} = y_n + h *   │
+│ g(t_{n+1}, x_{n+1},     │
+│ y_{n+1})                │
+│ (Giải hệ bằng phương    │
+│ pháp lặp điểm bất động) │
+╰─────────────────────────╯
+
+Bảng giá trị
+┏━━━━━━┳━━━━━┳━━━━━━┳━━━━━┓
+┃      ┃ t   ┃ x    ┃ y   ┃
+┃ Ite… ┃ (T… ┃ (Va… ┃ (V… ┃
+┡━━━━━━╇━━━━━╇━━━━━━╇━━━━━┩
+│ 0    │ 0.… │ 1.0… │ 0.… │
+│ 1    │ 0.… │ 0.9… │ 0.… │
+│ 2    │ 0.… │ 0.9… │ 0.… │
+│ 3    │ 0.… │ 0.9… │ 0.… │
+│ 4    │ 0.… │ 0.9… │ 0.… │
+│ ...  │ ... │ ...  │ ... │
+│ 46   │ 4.… │ -0.… │ -0… │
+│ 47   │ 4.… │ -0.… │ -0… │
+│ 48   │ 4.… │ 0.0… │ -0… │
+│ 49   │ 4.… │ 0.1… │ -0… │
+│ 50   │ 5.… │ 0.2… │ -0… │
+└──────┴─────┴──────┴─────┘
+
+Đã lưu kết quả vào file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_Eu
+ler_Implicit/ODE_2D_Euler_I
+mplicit.csv
+Đã lưu kết quả Phase vào 
+file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_Eu
+ler_Implicit/ODE_2D_Euler_I
+mplicit_Phase.csv
+Đã lưu đồ thị vào file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_Eu
+ler_Implicit/graph_ODE_2D_E
+uler_Implicit.png
+Đã lưu đồ thị Phase vào 
+file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_2D_Eu
+ler_Implicit/graph_ODE_2D_E
+uler_Implicit_Phase.png

@@ -1,6 +1,3 @@
-Dưới đây là file runner Python đáp ứng đầy đủ các yêu cầu của bạn.
-
-```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -10,6 +7,10 @@ from rich.panel import Panel
 from rich.text import Text
 
 # Import thuật toán từ file methods (Giả sử cấu trúc thư mục đã có)
+# Import thuật toán từ file methods (Giả sử cấu trúc thư mục đã có)
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from methods.ODE_1D_RK3 import solve_ode_1d_rk3
 
 # ==========================================
@@ -56,7 +57,11 @@ for i in range(len(t_res) - 1):
 # ==========================================
 # 3. TERMINAL OUTPUT (RICH)
 # ==========================================
-console = Console()
+console = Console(record=True)
+import os
+method_name = "ODE_1D_RK3"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # 3.1. In Đề bài
 input_info = f"""
@@ -122,8 +127,10 @@ df = pd.DataFrame({
     'x': t_res,
     'y': x_res
 })
-df.to_csv('ODE_1D_RK3.csv', index=False)
-console.print(f"\n[bold green]Đã xuất file CSV: ODE_1D_RK3.csv[/bold green]")
+
+csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+df.to_csv(csv_filename, index=False)
+console.print(f"\n[bold green]Đã xuất file CSV: {csv_filename}[/bold green]")
 
 # ==========================================
 # 5. GRAPH PLOTTING
@@ -135,6 +142,12 @@ plt.xlabel("Thời gian (t)")
 plt.ylabel("Nghiệm x(t)")
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend()
-plt.savefig('graph_ODE_1D_RK3.png')
-console.print(f"[bold green]Đã lưu đồ thị: graph_ODE_1D_RK3.png[/bold green]")
+img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+plt.savefig(img_filename)
+console.print(f"[bold green]Đã lưu đồ thị: {img_filename}[/bold green]")
 plt.close()
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[bold green]Đã lưu báo cáo text vào file: {txt_filename}[/bold green]")

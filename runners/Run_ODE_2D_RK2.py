@@ -1,6 +1,4 @@
-Dưới đây là file runner Python đáp ứng đầy đủ các yêu cầu của bạn.
 
-```python
 import numpy as np
 import matplotlib.pyplot as plt
 import csv
@@ -8,6 +6,10 @@ from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
 from rich.text import Text
+from rich.text import Text
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from methods.ODE_2D_RK2 import ode_2d_rk2
 
 # ==============================================================================
@@ -31,7 +33,13 @@ T  = 2.0        # Thời điểm kết thúc
 # 2. MAIN RUNNER
 # ==============================================================================
 def run():
-    console = Console()
+    console = Console(record=True)
+    
+    import os
+    # Define output directory
+    method_name = "ODE_2D_RK2"
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    os.makedirs(output_dir, exist_ok=True)
 
     # --- In Đề bài ---
     input_info = f"""
@@ -119,12 +127,22 @@ def run():
     console.print(table)
 
     # --- Xuất file CSV ---
-    with open('ODE_2D_RK2.csv', mode='w', newline='', encoding='utf-8') as file:
+    csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+    with open(csv_filename, mode='w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(['t', 'x', 'y'])
         for t, x, y in zip(t_vals, x_vals, y_vals):
             writer.writerow([t, x, y])
-    console.print("\n[green]Đã xuất file ODE_2D_RK2.csv[/green]")
+    console.print(f"\n[green]Đã xuất file {csv_filename}[/green]")
+
+    # --- Xuất file CSV Phase (x, y) ---
+    csv_phase_filename = os.path.join(output_dir, f"{method_name}_Phase.csv")
+    with open(csv_phase_filename, mode='w', newline='', encoding='utf-8') as file:
+        writer = csv.writer(file)
+        writer.writerow(['x', 'y'])
+        for x, y in zip(x_vals, y_vals):
+            writer.writerow([x, y])
+    console.print(f"[green]Đã xuất file {csv_phase_filename}[/green]")
 
     # --- Vẽ đồ thị ---
     plt.figure(figsize=(10, 6))
@@ -135,8 +153,28 @@ def run():
     plt.ylabel('Giá trị nghiệm')
     plt.legend()
     plt.grid(True)
-    plt.savefig('graph_ODE_2D_RK2.png')
-    console.print("[green]Đã lưu đồ thị graph_ODE_2D_RK2.png[/green]")
+    plt.grid(True)
+    img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+    plt.savefig(img_filename)
+    console.print(f"[green]Đã lưu đồ thị {img_filename}[/green]")
+
+    # --- Vẽ đồ thị Phase (y vs x) ---
+    plt.figure(figsize=(8, 8))
+    plt.plot(x_vals, y_vals, label='Phase Portrait', color='purple')
+    plt.title(f'Đồ thị Pha - RK2 (h={h})')
+    plt.xlabel('x (Nghiệm 1)')
+    plt.ylabel('y (Nghiệm 2)')
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    img_phase_filename = os.path.join(output_dir, f"graph_{method_name}_Phase.png")
+    plt.savefig(img_phase_filename)
+    console.print(f"[green]Đã lưu đồ thị {img_phase_filename}[/green]")
+    
+    # Save Text Report
+    txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+    console.save_text(txt_filename)
+    console.print(f"[green]Đã lưu báo cáo text vào file: {txt_filename}[/green]")
 
 if __name__ == "__main__":
     run()

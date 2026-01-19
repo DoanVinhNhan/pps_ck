@@ -75,7 +75,11 @@ def f_func(t, x):
     return eval(FUNCTION_EXPRESSION, {"x": x, "t": t, "np": np, "math": math})
 
 def main():
-    console = Console()
+    console = Console(record=True)
+    import os
+    method_name = "ODE_1D_Euler_Implicit"
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    os.makedirs(output_dir, exist_ok=True)
 
     # --- 3.1. HIỂN THỊ ĐỀ BÀI ---
     console.print(Panel.fit(
@@ -175,7 +179,7 @@ def main():
 
     # --- 3.4. XUẤT CSV ---
     df = pd.DataFrame({'t': t_res, 'x': x_res})
-    csv_filename = 'result_ODE_1D_Euler_Implicit.csv'
+    csv_filename = os.path.join(output_dir, f"{method_name}.csv")
     df.to_csv(csv_filename, index=False)
     console.print(f"\n[bold green]✔ Đã lưu kết quả vào file: {csv_filename}[/bold green]")
 

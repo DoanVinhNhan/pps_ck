@@ -25,9 +25,9 @@ T = 1.0         # Thời điểm kết thúc
 
 # Import thuật toán
 try:
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    import sys
+    import os
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
     from methods.ODE_2D_RK3 import ode_2d_rk3
 except ImportError:
@@ -53,7 +53,12 @@ except ImportError:
 # ==========================================
 # 2. EXECUTION & RICH OUTPUT
 # ==========================================
-console = Console()
+console = Console(record=True)
+
+# Define output directory
+method_name = "ODE_2D_RK3"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # Chạy thuật toán
 result = ode_2d_rk3(f, g, t0, x0, y0, h, T)
@@ -141,8 +146,16 @@ df = pd.DataFrame({
     'x': x_res,
     'y': y_res
 })
-df.to_csv('ODE_2D_RK3.csv', index=False)
-console.print(f"\n[bold yellow]Đã xuất file CSV: ODE_2D_RK3.csv[/bold yellow]")
+
+csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+df.to_csv(csv_filename, index=False)
+console.print(f"\n[bold yellow]Đã xuất file CSV: {csv_filename}[/bold yellow]")
+
+# Xuất Phase CSV (x, y)
+df_phase = pd.DataFrame({'x': x_res, 'y': y_res})
+csv_phase_filename = os.path.join(output_dir, f"{method_name}_Phase.csv")
+df_phase.to_csv(csv_phase_filename, index=False)
+console.print(f"[bold yellow]Đã xuất file CSV Phase: {csv_phase_filename}[/bold yellow]")
 
 # ==========================================
 # 4. PLOT GRAPH
@@ -155,6 +168,26 @@ plt.xlabel('Thời gian (t)')
 plt.ylabel('Giá trị nghiệm')
 plt.legend()
 plt.grid(True)
-plt.savefig('graph_ODE_2D_RK3.png')
-console.print(f"[bold yellow]Đã lưu đồ thị: graph_ODE_2D_RK3.png[/bold yellow]")
+plt.grid(True)
+img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+plt.savefig(img_filename)
+console.print(f"[bold yellow]Đã lưu đồ thị: {img_filename}[/bold yellow]")
+
+# Vẽ đồ thị Phase (y vs x)
+plt.figure(figsize=(8, 8))
+plt.plot(x_res, y_res, label='Phase Portrait', color='purple')
+plt.title(f'Đồ thị Pha - RK3 (h={h})')
+plt.xlabel('x (Nghiệm 1)')
+plt.ylabel('y (Nghiệm 2)')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+img_phase_filename = os.path.join(output_dir, f"graph_{method_name}_Phase.png")
+plt.savefig(img_phase_filename)
+console.print(f"[bold yellow]Đã lưu đồ thị Phase: {img_phase_filename}[/bold yellow]")
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[bold yellow]Đã lưu báo cáo text vào file: {txt_filename}[/bold yellow]")
 plt.show()

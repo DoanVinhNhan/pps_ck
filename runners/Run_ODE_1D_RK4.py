@@ -31,7 +31,10 @@ x_values = result['x']
 # ==========================================
 # 3. TERMINAL OUTPUT (RICH)
 # ==========================================
-console = Console()
+console = Console(record=True)
+method_name = "ODE_1D_RK4"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # 3.1. In đề bài
 input_desc = (
@@ -107,8 +110,10 @@ df = pd.DataFrame({
     'x': t_values,
     'y': x_values
 })
-df.to_csv("ODE_1D_RK4.csv", index=False)
-console.print(f"\n[green]Đã xuất file kết quả: ODE_1D_RK4.csv[/green]")
+
+csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+df.to_csv(csv_filename, index=False)
+console.print(f"\n[green]Đã xuất file kết quả: {csv_filename}[/green]")
 
 # ==========================================
 # 5. PLOT GRAPH
@@ -120,6 +125,13 @@ plt.xlabel("t")
 plt.ylabel("x(t)")
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend()
-plt.savefig("graph_ODE_1D_RK4.png")
-console.print(f"[green]Đã lưu đồ thị: graph_ODE_1D_RK4.png[/green]")
+img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+plt.savefig(img_filename)
+console.print(f"[green]Đã lưu đồ thị: {img_filename}[/green]")
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[green]Đã lưu báo cáo text vào file: {txt_filename}[/green]")
+
 plt.show()

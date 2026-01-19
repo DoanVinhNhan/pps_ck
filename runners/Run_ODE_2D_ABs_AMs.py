@@ -28,11 +28,11 @@ s_steps = 4     # Số bước của phương pháp (2, 3, hoặc 4)
 # 2. IMPORT THUẬT TOÁN
 # ==========================================
 try:
-import sys
-import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+  import sys
+  import os
+  sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-    from methods.ODE_2D_ABs_AMs import solve_ode_2d_ab_am
+  from methods.ODE_2D_ABs_AMs import solve_ode_2d_ab_am
 except ImportError:
     # Fallback nếu không tìm thấy module (để code chạy được trong môi trường test đơn lẻ)
     # Trong thực tế, phần này sẽ được import từ file methods/ODE_2D_ABs_AMs.py
@@ -85,7 +85,13 @@ except ImportError:
 # ==========================================
 # 3. EXECUTION & OUTPUT
 # ==========================================
-console = Console()
+console = Console(record=True)
+
+import os
+# Define output directory
+method_name = "ODE_2D_ABs_AMs"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # 3.1. In đề bài
 console.print(Panel(Text(f"Hàm f(t,x,y): y\nHàm g(t,x,y): -x\nKhoảng t: [{t0}, {T}]\nBước nhảy h: {h}\nGiá trị đầu: x({t0})={x0}, y({t0})={y0}\nSố bước s: {s_steps}", justify="left"), title="Đề bài", style="bold cyan"))
@@ -153,8 +159,13 @@ df = pd.DataFrame({
     'x': x_vals,
     'y': y_vals
 })
-df.to_csv('ODE_2D_ABs_AMs.csv', index=False)
-console.print(f"\n[bold]Đã lưu file kết quả:[/bold] ODE_2D_ABs_AMs.csv")
+df.to_csv(os.path.join(output_dir, f"{method_name}.csv"), index=False)
+console.print(f"\n[bold]Đã lưu file kết quả:[/bold] {method_name}.csv")
+
+# Xuất Phase CSV (x, y)
+df_phase = pd.DataFrame({'x': x_vals, 'y': y_vals})
+df_phase.to_csv(os.path.join(output_dir, f"{method_name}_Phase.csv"), index=False)
+console.print(f"[bold]Đã lưu file kết quả Phase:[/bold] {method_name}_Phase.csv")
 
 # 3.6. Vẽ đồ thị
 plt.figure(figsize=(10, 6))
@@ -165,6 +176,24 @@ plt.xlabel('Thời gian (t)')
 plt.ylabel('Giá trị nghiệm')
 plt.legend()
 plt.grid(True)
-plt.savefig('graph_ODE_2D_ABs_AMs.png')
-console.print(f"[bold]Đã lưu đồ thị:[/bold] graph_ODE_2D_ABs_AMs.png")
+plt.savefig(os.path.join(output_dir, f"graph_{method_name}.png"))
+console.print(f"[bold]Đã lưu đồ thị:[/bold] graph_{method_name}.png")
+
+# Vẽ đồ thị Phase (y vs x)
+plt.figure(figsize=(8, 6))
+plt.plot(x_vals, y_vals, label='Phase Portrait (y vs x)', color='purple')
+plt.title(f'Đồ thị Pha (Phase Portrait) - AB-AM (s={s_steps})')
+plt.xlabel('x (Nghiệm 1)')
+plt.ylabel('y (Nghiệm 2)')
+plt.grid(True)
+plt.legend()
+plt.tight_layout()
+plt.savefig(os.path.join(output_dir, f"graph_{method_name}_Phase.png"))
+console.print(f"[bold]Đã lưu đồ thị Phase:[/bold] graph_{method_name}_Phase.png")
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[bold]Đã lưu báo cáo text bao gồm bảng giá trị vào file: {txt_filename}[/bold]")
+
 plt.show()

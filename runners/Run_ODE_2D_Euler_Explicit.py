@@ -1,6 +1,3 @@
-Dưới đây là file runner Python đầy đủ, tuân thủ các yêu cầu về Input, Output (Rich terminal, CSV, Graph) và sử dụng ví dụ mô hình Thú - Mồi (Lotka-Volterra) được đề cập trong tài liệu PDF (Slide 13).
-
-```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -65,7 +62,12 @@ except ImportError:
 # ==============================================================================
 # 3. EXECUTION & RICH OUTPUT
 # ==============================================================================
-console = Console()
+console = Console(record=True)
+import os
+# Define output directory
+method_name = "ODE_2D_Euler_Explicit"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # Thực thi thuật toán
 result = euler_forward_2d(f, g, t0, x0, y0, h, T)
@@ -125,9 +127,15 @@ df = pd.DataFrame({
     'x': x_vals,
     'y': y_vals
 })
-csv_filename = "ODE_2D_Euler_Explicit.csv"
+csv_filename = os.path.join(output_dir, f"{method_name}.csv")
 df.to_csv(csv_filename, index=False)
 console.print(f"\n[green]✔ Đã xuất file kết quả: [bold]{csv_filename}[/bold][/green]")
+
+# Xuất Phase CSV (x, y)
+df_phase = pd.DataFrame({'x': x_vals, 'y': y_vals})
+csv_phase_filename = os.path.join(output_dir, f"{method_name}_Phase.csv")
+df_phase.to_csv(csv_phase_filename, index=False)
+console.print(f"[green]✔ Đã xuất file kết quả Phase: [bold]{csv_phase_filename}[/bold][/green]")
 
 # ==============================================================================
 # 5. DRAW GRAPH
@@ -142,7 +150,26 @@ plt.ylabel("Số lượng cá thể")
 plt.legend()
 plt.grid(True, linestyle=':', alpha=0.6)
 
-img_filename = "graph_ODE_2D_Euler_Explicit.png"
+img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
 plt.savefig(img_filename)
 console.print(f"[green]✔ Đã lưu đồ thị: [bold]{img_filename}[/bold][/green]")
+
+# Vẽ đồ thị Phase (y vs x)
+plt.figure(figsize=(8, 8))
+plt.plot(x_vals, y_vals, label='Phase Portrait (y vs x)', color='purple', linewidth=2)
+plt.title(f'Đồ thị Pha (Lotka-Volterra) - Euler Explicit')
+plt.xlabel('x (Prey)')
+plt.ylabel('y (Predator)')
+plt.grid(True, linestyle=':', alpha=0.6)
+plt.legend()
+plt.tight_layout()
+img_phase_filename = os.path.join(output_dir, f"graph_{method_name}_Phase.png")
+plt.savefig(img_phase_filename)
+console.print(f"[green]✔ Đã lưu đồ thị Phase: [bold]{img_phase_filename}[/bold][/green]")
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[green]✔ Đã lưu báo cáo text vào file: {txt_filename}[/green]")
+
 plt.show()

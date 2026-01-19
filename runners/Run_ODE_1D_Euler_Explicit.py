@@ -4,91 +4,125 @@ import matplotlib.pyplot as plt
 from rich.console import Console
 from rich.table import Table
 from rich.panel import Panel
+from rich import box
+
+# Import thuật toán từ file nguồn
+# Import thuật toán từ file nguồn
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-
 from methods.ODE_1D_Euler_Explicit import solve_ode_euler_forward_1d
 
-# --- INPUT PARAMETERS ---
+# ==========================================
+# 1. INPUT PARAMETERS
+# ==========================================
 def f_ode(t, x):
-    # Ví dụ: x' = x - t, với x(0) = 1
-    return x - t
+    """Hàm f(t, x) cho phương trình x' = f(t, x)"""
+    # Ví dụ: x' = x - t^2 + 1
+    return x - t**2 + 1
 
-t_start = 0.0       # Thời điểm bắt đầu (t0)
-x_start = 1.0       # Giá trị ban đầu (x0)
-step_size = 0.1     # Bước nhảy (h)
-t_end = 1.0         # Thời điểm kết thúc (T)
+FUNC_STR = "x' = x - t^2 + 1"
+T0 = 0.0      # Thời điểm bắt đầu
+X0 = 0.5      # Giá trị ban đầu x(t0)
+H = 0.2       # Bước nhảy
+T_END = 2.0   # Thời điểm kết thúc
 
-# --- EXECUTION ---
-result = solve_ode_euler_forward_1d(f_ode, t_start, x_start, step_size, t_end)
+# ==========================================
+# 2. EXECUTION
+# ==========================================
+result = solve_ode_euler_forward_1d(f_ode, T0, X0, H, T_END)
 t_values = result['t']
 x_values = result['x']
 
-# --- TERMINAL OUTPUT (RICH) ---
-console = Console()
+# ==========================================
+# 2. MAIN RUNNER
+# ==========================================
+def main():
+    console = Console(record=True)
+    method_name = "ODE_1D_Euler_Explicit"
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    os.makedirs(output_dir, exist_ok=True)
 
-# 1. In tiêu đề Đề bài
-input_desc = (
-    f"Hàm số: x' = f(t, x) = x - t\n"
-    f"Khoảng tính toán: [{t_start}, {t_end}]\n"
-    f"Bước nhảy h: {step_size}\n"
-    f"Điều kiện đầu: x({t_start}) = {x_start}"
-)
-console.print(Panel(input_desc, title="Đề bài", style="bold cyan"))
+    # 3.1. In đề bài
+    console.print(Panel("[bold cyan]Đề bài[/bold cyan]", expand=False, border_style="cyan"))
+    console.print(f"• Phương trình: [yellow]{FUNC_STR}[/yellow]")
+    console.print(f"• Khoảng tính toán: [{T0}, {T_END}]")
+    console.print(f"• Bước nhảy (h): {H}")
+    console.print(f"• Điều kiện ban đầu: x({T0}) = {X0}")
+    console.print("")
 
-# 2. In tiêu đề Áp dụng
-console.print("\n[bold green]Áp dụng ODE_1D_Euler_Explicit Ta có:[/bold green]")
+    # 3.2. Tiêu đề phương pháp
+    console.print("[bold green]Áp dụng ODE_1D_Euler_Explicit Ta có:[/bold green]")
 
-# 3. In công thức
-formula_text = "x_{i+1} = x_i + h * f(t_i, x_i)"
-console.print(f"\n{formula_text}\n")
+    # 3.3. Công thức
+    console.print(Panel("x_{i+1} = x_i + h * f(t_i, x_i)", title="Công thức Euler Hiện", expand=False))
+    console.print("")
 
-# 4. In Bảng giá trị
-table = Table(title="Bảng giá trị")
-table.add_column("Iteration", justify="center")
-table.add_column("t (Biến độc lập)", justify="right")
-table.add_column("x (Biến phụ thuộc)", justify="right")
-table.add_column("f(t, x) (Slope)", justify="right")
+    # 3.4. Bảng giá trị
+    console.print("[bold magenta]Bảng giá trị[/bold magenta]")
+    table = Table(box=box.SIMPLE_HEAD)
+    table.add_column("Iteration", justify="center", style="cyan")
+    table.add_column("t (Time)", justify="right")
+    table.add_column("x (Value)", justify="right", style="green")
+    table.add_column("Slope k1=f(t,x)", justify="right", style="yellow")
 
-num_points = len(t_values)
+    n = len(t_values)
+    # Tính slope để hiển thị trong bảng
+    slopes = [f_ode(t, x) for t, x in zip(t_values, x_values)]
 
-def get_row_data(idx):
-    t_val = t_values[idx]
-    x_val = x_values[idx]
-    # Tính slope để hiển thị (trừ điểm cuối cùng không dùng để tính tiếp)
-    slope = f_ode(t_val, x_val) if idx < num_points - 1 else float('nan')
-    slope_str = f"{slope:.6f}" if idx < num_points - 1 else "-"
-    return str(idx), f"{t_val:.6f}", f"{x_val:.6f}", slope_str
+    for i in range(n):
+        # Logic hiển thị: 5 dòng đầu và 5 dòng cuối
+        if n > 10 and 5 <= i < n - 5:
+            if i == 5:
+                table.add_row("...", "...", "...", "...")
+            continue
 
-if num_points <= 10:
-    for i in range(num_points):
-        table.add_row(*get_row_data(i))
-else:
-    for i in range(5):
-        table.add_row(*get_row_data(i))
-    table.add_row("...", "...", "...", "...")
-    for i in range(num_points - 5, num_points):
-        table.add_row(*get_row_data(i))
+        t_val = t_values[i]
+        x_val = x_values[i]
+        slope_val = slopes[i]
+        
+        table.add_row(
+            str(i), 
+            f"{t_val:.6f}", 
+            f"{x_val:.6f}", 
+            f"{slope_val:.6f}"
+        )
 
-console.print(table)
+    console.print(table)
 
-# --- CSV OUTPUT ---
-# Mapping: t -> x (independent), x -> y (dependent)
-df = pd.DataFrame({
-    'x': t_values,
-    'y': x_values
-})
-df.to_csv('ODE_1D_Euler_Explicit.csv', index=False)
-console.print(f"\n[yellow]Đã xuất file CSV: ODE_1D_Euler_Explicit.csv[/yellow]")
+    # ==========================================
+    # 4. CSV OUTPUT
+    # ==========================================
+    # Mapping: t -> x (biến độc lập), x -> y (biến phụ thuộc) theo yêu cầu
+    df = pd.DataFrame({
+        'x': t_values,
+        'y': x_values
+    })
+    csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+    df.to_csv(csv_filename, index=False)
+    console.print(f"\n[bold green]Đã xuất file kết quả: {csv_filename}[/bold green]")
 
-# --- GRAPH PLOTTING ---
-plt.figure(figsize=(10, 6))
-plt.plot(t_values, x_values, marker='o', linestyle='-', color='b', label='Euler Explicit')
-plt.title(f"Nghiệm gần đúng ODE bằng phương pháp Euler Hiện (h={step_size})")
-plt.xlabel("Thời gian (t)")
-plt.ylabel("Nghiệm x(t)")
-plt.grid(True, linestyle='--', alpha=0.7)
-plt.legend()
-plt.savefig('graph_ODE_1D_Euler_Explicit.png')
-console.print(f"[yellow]Đã lưu đồ thị: graph_ODE_1D_Euler_Explicit.png[/yellow]")
+    # ==========================================
+    # 5. GRAPH PLOTTING
+    # ==========================================
+    plt.figure(figsize=(10, 6))
+    plt.plot(t_values, x_values, marker='o', linestyle='-', color='b', label='Euler Explicit')
+    plt.title(f"Giải phương trình vi phân bằng Euler hiện (h={H})")
+    plt.xlabel("t")
+    plt.ylabel("x(t)")
+    plt.grid(True)
+    plt.legend()
+    
+    img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+    plt.savefig(img_filename)
+    console.print(f"[bold green]Đã lưu đồ thị: {img_filename}[/bold green]")
+    
+    # Save Text Report
+    txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+    console.save_text(txt_filename)
+    console.print(f"[bold green]Đã lưu báo cáo text vào file: {txt_filename}[/bold green]")
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()

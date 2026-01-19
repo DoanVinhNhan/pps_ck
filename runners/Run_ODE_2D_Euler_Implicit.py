@@ -1,6 +1,3 @@
-Dưới đây là file runner Python đáp ứng đầy đủ các yêu cầu của bạn.
-
-```python
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -72,7 +69,13 @@ except ImportError:
 # MAIN EXECUTION
 # ==============================================================================
 def main():
-    console = Console()
+    console = Console(record=True)
+    
+    import os
+    # Define output directory
+    method_name = "ODE_2D_Euler_Implicit"
+    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    os.makedirs(output_dir, exist_ok=True)
 
     # 1. In tiêu đề Đề bài
     param_text = Text()
@@ -130,9 +133,16 @@ def main():
         'x': x_vals,
         'y': y_vals
     })
-    csv_filename = 'ODE_2D_Euler_Implicit.csv'
+
+    csv_filename = os.path.join(output_dir, f"{method_name}.csv")
     df.to_csv(csv_filename, index=False)
     console.print(f"\n[green]Đã lưu kết quả vào file: {csv_filename}[/green]")
+
+    # Xuất Phase CSV (x, y)
+    df_phase = pd.DataFrame({'x': x_vals, 'y': y_vals})
+    csv_phase_filename = os.path.join(output_dir, f"{method_name}_Phase.csv")
+    df_phase.to_csv(csv_phase_filename, index=False)
+    console.print(f"[green]Đã lưu kết quả Phase vào file: {csv_phase_filename}[/green]")
 
     # 6. Vẽ đồ thị
     plt.figure(figsize=(10, 6))
@@ -144,9 +154,28 @@ def main():
     plt.legend()
     plt.grid(True)
     
-    graph_filename = 'graph_ODE_2D_Euler_Implicit.png'
+    graph_filename = os.path.join(output_dir, f"graph_{method_name}.png")
     plt.savefig(graph_filename)
     console.print(f"[green]Đã lưu đồ thị vào file: {graph_filename}[/green]")
+    
+    # Vẽ đồ thị Phase (y vs x)
+    plt.figure(figsize=(8, 8))
+    plt.plot(x_vals, y_vals, label='Phase Portrait (y vs x)', color='purple')
+    plt.title(f'Đồ thị Pha - Euler Ẩn (h={h})')
+    plt.xlabel('x (Nghiệm 1)')
+    plt.ylabel('y (Nghiệm 2)')
+    plt.grid(True)
+    plt.legend()
+    plt.tight_layout()
+    graph_phase_filename = os.path.join(output_dir, f"graph_{method_name}_Phase.png")
+    plt.savefig(graph_phase_filename)
+    console.print(f"[green]Đã lưu đồ thị Phase vào file: {graph_phase_filename}[/green]")
+    
+    # Save Text Report
+    txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+    console.save_text(txt_filename)
+    console.print(f"[green]Đã lưu báo cáo text vào file: {txt_filename}[/green]")
+
     # plt.show() # Bỏ comment nếu muốn hiện cửa sổ plot
 
 if __name__ == "__main__":

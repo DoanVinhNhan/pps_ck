@@ -26,7 +26,11 @@ T = 2.0         # Thời điểm kết thúc
 t_values, x_values = solve_ode_1d_ab_am(f, t0, x0, h, T)
 
 # --- Terminal Output ---
-console = Console()
+console = Console(record=True)
+import os
+method_name = "ODE_1D_ABs_AMs"
+output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+os.makedirs(output_dir, exist_ok=True)
 
 # 1. In tiêu đề Đề bài
 input_info = f"Hàm số f(t, x): x - t^2 + 1\nKhoảng thời gian: [{t0}, {T}]\nBước nhảy h: {h}\nGiá trị ban đầu x({t0}): {x0}"
@@ -69,8 +73,9 @@ df = pd.DataFrame({
     'x': t_values,
     'y': x_values
 })
-df.to_csv('ODE_1D_ABs_AMs.csv', index=False)
-console.print(f"\n[bold blue]Đã lưu kết quả vào file: ODE_1D_ABs_AMs.csv[/bold blue]")
+csv_filename = os.path.join(output_dir, f"{method_name}.csv")
+df.to_csv(csv_filename, index=False)
+console.print(f"\n[bold blue]Đã lưu kết quả vào file: {csv_filename}[/bold blue]")
 
 # --- Graph Output ---
 plt.figure(figsize=(10, 6))
@@ -81,5 +86,11 @@ plt.ylabel("Giá trị nghiệm x(t)")
 plt.grid(True, linestyle='--', alpha=0.7)
 plt.legend()
 plt.tight_layout()
-plt.savefig('graph_ODE_1D_ABs_AMs.png')
-console.print(f"[bold blue]Đã lưu đồ thị vào file: graph_ODE_1D_ABs_AMs.png[/bold blue]")
+img_filename = os.path.join(output_dir, f"graph_{method_name}.png")
+plt.savefig(img_filename)
+console.print(f"[bold blue]Đã lưu đồ thị vào file: {img_filename}[/bold blue]")
+
+# Save Text Report
+txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+console.save_text(txt_filename)
+console.print(f"[bold blue]Đã lưu báo cáo text vào file: {txt_filename}[/bold blue]")
