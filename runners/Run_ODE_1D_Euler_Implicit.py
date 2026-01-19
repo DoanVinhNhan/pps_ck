@@ -201,6 +201,10 @@ def main():
     img_filename = os.path.join(output_dir, 'graph_ODE_1D_Euler_Implicit.png')
     plt.savefig(img_filename)
     console.print(f"[bold green]✔ Đã lưu đồ thị vào file: {img_filename}[/bold green]")
+    # Save Text Report
+    txt_filename = os.path.join(output_dir, f"{method_name}.txt")
+    console.save_text(txt_filename)
+    console.print(f"[bold green]✔ Đã lưu báo cáo text vào file: {txt_filename}[/bold green]")
     # plt.show() # Bỏ comment nếu muốn hiện cửa sổ đồ thị
 
 if __name__ == "__main__":

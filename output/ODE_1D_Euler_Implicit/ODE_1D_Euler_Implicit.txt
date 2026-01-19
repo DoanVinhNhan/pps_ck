@@ -1,0 +1,128 @@
+╭─ BÀI TOÁN GIÁ TRỊ BAN Đ─╮
+│ ĐỀ BÀI:                 │
+│ Giải phương trình vi    │
+│ phân: x' = -2 * x       │
+│ Điều kiện ban đầu:      │
+│ x(0.0) = 1.0            │
+│ Bước nhảy h = 0.1       │
+│ Miền tính toán: [0.0,   │
+│ 0.5]                    │
+╰─────────────────────────╯
+
+LỜI GIẢI CHI TIẾT (PHƯƠNG 
+PHÁP EULER ẨN):
+
+Ta sử dụng phương pháp 
+Euler Ẩn (Backward Euler) 
+với công thức tổng quát:
+    x_{i+1} = x_i + h * 
+f(t_{i+1}, x_{i+1})
+Thay số liệu vào, ta có 
+phương trình ẩn tại mỗi 
+bước:
+    x_{i+1} = x_i + 0.1 * 
+(-2 * x_{i+1})
+Do x_{i+1} xuất hiện ở cả 
+hai vế, ta sử dụng phương 
+pháp lặp điểm bất động để 
+tìm nghiệm gần đúng.
+Quy trình tại mỗi bước i:
+  1. Dự báo giá trị khởi 
+tạo x^{(0)} bằng Euler 
+hiện: x^{(0)} = x_i + h * 
+f(t_i, x_i)
+  2. Lặp hiệu chỉnh: 
+x^{(k+1)} = x_i + h * 
+f(t_{i+1}, x^{(k)}) cho đến
+khi hội tụ (|x^{(k+1)} - 
+x^{(k)}| < epsilon).
+---------------------------
+---------------------------
+------
+
+Tính toán tại bước i = 0: 
+Từ t_0=0.00 sang t_1=0.10
+Ta có: f(t_0, x_0) = -2 * 
+1.0000 = -2.0000
+Dự báo giá trị khởi tạo 
+(Euler hiện):
+    x_{next}^(0) = 1.0000 +
+0.1 * (-2.0000) = 0.800000
+  Bảng quá trình lặp tìm   
+       nghiệm ẩn x_1       
+                           
+                       S…  
+                       số  
+  L…   x…        x^…   |…  
+  l…   (…   f…   (T…    -  
+  (…   đ…   x…   mớ…   x…  
+ ───────────────────────── 
+  0    0…   -…   0.…   4…  
+  1    0…   -…   0.…   8…  
+  2    0…   -…   0.…   1…  
+  3    0…   -…   0.…   3…  
+  4    0…   -…   0.…   6…  
+  5    0…   -…   0.…   1…  
+  6    0…   -…   0.…   2…  
+  7    0…   -…   0.…   5…  
+                           
+Vì sai số < 1e-06, ta chấp 
+nhận nghiệm: x_1 = 0.833333
+
+Tính toán tại bước i = 1: 
+Từ t_1=0.10 sang t_2=0.20
+Ta có: f(t_1, x_1) = -2 * 
+0.8333 = -1.6667
+Dự báo giá trị khởi tạo 
+(Euler hiện):
+    x_{next}^(0) = 0.8333 +
+0.1 * (-1.6667) = 0.666667
+  Bảng quá trình lặp tìm   
+       nghiệm ẩn x_2       
+                           
+                       S…  
+                       số  
+  L…   x…        x^…   |…  
+  l…   (…   f…   (T…    -  
+  (…   đ…   x…   mớ…   x…  
+ ───────────────────────── 
+  0    0…   -…   0.…   3…  
+  1    0…   -…   0.…   6…  
+  2    0…   -…   0.…   1…  
+  3    0…   -…   0.…   2…  
+  4    0…   -…   0.…   5…  
+  5    0…   -…   0.…   1…  
+  6    0…   -…   0.…   2…  
+  7    0…   -…   0.…   4…  
+                           
+Vì sai số < 1e-06, ta chấp 
+nhận nghiệm: x_2 = 0.694444
+
+... (Các bước tiếp theo 
+thực hiện tương tự) ...
+
+
+   BẢNG KẾT QUẢ TỔNG HỢP   
+╭────────┬────────┬───────╮
+│        │  Thời  │       │
+│  Bước  │  gian  │ Nghi… │
+│  (i)   │  (t)   │ x(t)  │
+├────────┼────────┼───────┤
+│   0    │  0.00  │ 1.00… │
+│   1    │  0.10  │ 0.83… │
+│   2    │  0.20  │ 0.69… │
+│   3    │  0.30  │ 0.57… │
+│   4    │  0.40  │ 0.48… │
+│   5    │  0.50  │ 0.40… │
+╰────────┴────────┴───────╯
+
+✔ Đã lưu kết quả vào file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_1D_Eu
+ler_Implicit/ODE_1D_Euler_I
+mplicit.csv
+✔ Đã lưu đồ thị vào file: 
+/Users/doanvinhnhan/pps_ck/
+runners/../output/ODE_1D_Eu
+ler_Implicit/graph_ODE_1D_E
+uler_Implicit.png
