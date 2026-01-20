@@ -1,65 +1,62 @@
-╭─────────────────────────╮
-│  ĐỀ BÀI: Giải hệ PTVP   │
-│  (Lotka-Volterra) bằng  │
-│       Euler Hiện        │
-╰─────────────────────────╯
-Khoảng thời gian: [0.0, 
-20.0]
+╭────────────────────────────╮
+│    ĐỀ BÀI: Giải hệ PTVP    │
+│   (Lotka-Volterra) bằng    │
+│         Euler Hiện         │
+╰────────────────────────────╯
+Khoảng thời gian: [0.0, 20.0]
 Bước nhảy h: 0.1
-Giá trị ban đầu: 
-x(0.0)=2.0, y(0.0)=1.0
+Giá trị ban đầu: x(0.0)=2.0, 
+y(0.0)=1.0
 Hệ phương trình:
-  dx/dt = 1.0x(1 - x/10.0) 
-- 0.5xy
+  dx/dt = 1.0x(1 - x/10.0) - 
+0.5xy
   dy/dt = -0.5y + 0.5xy
 
-Áp dụng 
-ODE_2D_Euler_Explicit Ta 
-có:
-╭───── Công thức lặp ─────╮
-│ x_{n+1} = x_n + h *     │
-│ f(t_n, x_n, y_n)        │
-│ y_{n+1} = y_n + h *     │
-│ g(t_n, x_n, y_n)        │
-│ t_{n+1} = t_n + h       │
-╰─────────────────────────╯
+Áp dụng ODE_2D_Euler_Explicit 
+Ta có:
+╭────── Công thức lặp ───────╮
+│ x_{n+1} = x_n + h * f(t_n, │
+│ x_n, y_n)                  │
+│ y_{n+1} = y_n + h * g(t_n, │
+│ x_n, y_n)                  │
+│ t_{n+1} = t_n + h          │
+╰────────────────────────────╯
 
 Bảng giá trị
-┏━━━━━━┳━━━━━┳━━━━━━┳━━━━━┓
-┃      ┃   t ┃    x ┃   y ┃
-┃ Ite… ┃ (T… ┃ (Pr… ┃ (P… ┃
-┡━━━━━━╇━━━━━╇━━━━━━╇━━━━━┩
-│  0   │ 0.… │ 2.0… │ 1.… │
-│  1   │ 0.… │ 2.0… │ 1.… │
-│  2   │ 0.… │ 2.1… │ 1.… │
-│  3   │ 0.… │ 2.1… │ 1.… │
-│  4   │ 0.… │ 2.2… │ 1.… │
-│ ...  │ ... │  ... │ ... │
-│ 196  │ 19… │ 1.6… │ 1.… │
-│ 197  │ 19… │ 1.6… │ 1.… │
-│ 198  │ 19… │ 1.6… │ 1.… │
-│ 199  │ 19… │ 1.6… │ 1.… │
-│ 200  │ 20… │ 1.6… │ 1.… │
-└──────┴─────┴──────┴─────┘
+┏━━━━━━┳━━━━━━┳━━━━━━┳━━━━━━━┓
+┃      ┃    t ┃    x ┃     y ┃
+┃ Ite… ┃ (Ti… ┃ (Pr… ┃ (Pre… ┃
+┡━━━━━━╇━━━━━━╇━━━━━━╇━━━━━━━┩
+│  0   │ 0.0… │ 2.0… │ 1.00… │
+│  1   │ 0.1… │ 2.0… │ 1.05… │
+│  2   │ 0.2… │ 2.1… │ 1.10… │
+│  3   │ 0.3… │ 2.1… │ 1.16… │
+│  4   │ 0.4… │ 2.2… │ 1.23… │
+│ ...  │  ... │  ... │   ... │
+│ 196  │ 19.… │ 1.6… │ 1.41… │
+│ 197  │ 19.… │ 1.6… │ 1.46… │
+│ 198  │ 19.… │ 1.6… │ 1.50… │
+│ 199  │ 19.… │ 1.6… │ 1.55… │
+│ 200  │ 20.… │ 1.6… │ 1.60… │
+└──────┴──────┴──────┴───────┘
 
 ✔ Đã xuất file kết quả: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_Eu
-ler_Explicit/ODE_2D_Euler_E
-xplicit.csv
-✔ Đã xuất file kết quả 
-Phase: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_Eu
-ler_Explicit/ODE_2D_Euler_E
-xplicit_Phase.csv
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_Euler_Ex
+plicit/ODE_2D_Euler_Explicit.c
+sv
+✔ Đã xuất file kết quả Phase: 
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_Euler_Ex
+plicit/ODE_2D_Euler_Explicit_P
+hase.csv
 ✔ Đã lưu đồ thị: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_Eu
-ler_Explicit/graph_ODE_2D_E
-uler_Explicit.png
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_Euler_Ex
+plicit/graph_ODE_2D_Euler_Expl
+icit.png
 ✔ Đã lưu đồ thị Phase: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_Eu
-ler_Explicit/graph_ODE_2D_E
-uler_Explicit_Phase.png
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_Euler_Ex
+plicit/graph_ODE_2D_Euler_Expl
+icit_Phase.png

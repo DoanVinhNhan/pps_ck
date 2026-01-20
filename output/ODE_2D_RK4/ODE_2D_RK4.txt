@@ -1,72 +1,67 @@
-╭─────────────────────────╮
-│ Đề bài: Giải hệ PTVP    │
-│ bằng RK4                │
-╰─────────────────────────╯
-- Hàm f(t, x, y) (dx/dt): x
-- y + 2t
-- Hàm g(t, x, y) (dy/dt): x
-+ y
-- Khoảng thời gian: [0.0, 
-1.0]
+╭────────────────────────────╮
+│ Đề bài: Giải hệ PTVP bằng  │
+│ RK4                        │
+╰────────────────────────────╯
+- Hàm f(t, x, y) (dx/dt): x - 
+y + 2t
+- Hàm g(t, x, y) (dy/dt): x + 
+y
+- Khoảng thời gian: [0.0, 1.0]
 - Bước nhảy h: 0.1
-- Điều kiện đầu: 
-x(0.0)=1.0, y(0.0)=1.0
----------------------------
--------------
+- Điều kiện đầu: x(0.0)=1.0, 
+y(0.0)=1.0
+------------------------------
+----------
 Áp dụng ODE_2D_RK4 Ta có:
-╭─ Công thức RK4 (Hệ 2 ch─╮
-│ k₁x = h.f(t, x, y);     │
-│ k₁y = h.g(t, x, y)      │
-│ k₂x = h.f(t + h/2, x +  │
-│ k₁x/2, y + k₁y/2);  k₂y │
-│ = h.g(t + h/2, x +      │
-│ k₁x/2, y + k₁y/2)       │
-│ k₃x = h.f(t + h/2, x +  │
-│ k₂x/2, y + k₂y/2);  k₃y │
-│ = h.g(t + h/2, x +      │
-│ k₂x/2, y + k₂y/2)       │
-│ k₄x = h.f(t + h, x +    │
-│ k₃x, y + k₃y);  k₄y =   │
-│ h.g(t + h, x + k₃x, y + │
-│ k₃y)                    │
-│ x_next = x + ⅙(k₁x +    │
-│ 2k₂x + 2k₃x + k₄x)      │
-│ y_next = y + ⅙(k₁y +    │
-│ 2k₂y + 2k₃y + k₄y)      │
-╰─────────────────────────╯
+╭─ Công thức RK4 (Hệ 2 chiều─╮
+│ k₁x = h.f(t, x, y);  k₁y = │
+│ h.g(t, x, y)               │
+│ k₂x = h.f(t + h/2, x +     │
+│ k₁x/2, y + k₁y/2);  k₂y =  │
+│ h.g(t + h/2, x + k₁x/2, y  │
+│ + k₁y/2)                   │
+│ k₃x = h.f(t + h/2, x +     │
+│ k₂x/2, y + k₂y/2);  k₃y =  │
+│ h.g(t + h/2, x + k₂x/2, y  │
+│ + k₂y/2)                   │
+│ k₄x = h.f(t + h, x + k₃x,  │
+│ y + k₃y);  k₄y = h.g(t +   │
+│ h, x + k₃x, y + k₃y)       │
+│ x_next = x + ⅙(k₁x + 2k₂x  │
+│ + 2k₃x + k₄x)              │
+│ y_next = y + ⅙(k₁y + 2k₂y  │
+│ + 2k₃y + k₄y)              │
+╰────────────────────────────╯
 Bảng giá trị
-┏━┳━┳━┳━┳━┳━┳━┳━┳━━┳━┳━━┳━┓
-┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃ ┃  ┃ ┃  ┃ ┃
-┡━╇━╇━╇━╇━╇━╇━╇━╇━━╇━╇━━╇━┩
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-│ │ │ │ │ │ │ │ │  │ │  │ │
-└─┴─┴─┴─┴─┴─┴─┴─┴──┴─┴──┴─┘
+┏━┳━┳━━┳━┳━━┳━┳━━┳━┳━━┳━┳━━┳━┓
+┃ ┃ ┃  ┃ ┃  ┃ ┃  ┃ ┃  ┃ ┃  ┃ ┃
+┡━╇━╇━━╇━╇━━╇━╇━━╇━╇━━╇━╇━━╇━┩
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+│ │ │  │ │  │ │  │ │  │ │  │ │
+└─┴─┴──┴─┴──┴─┴──┴─┴──┴─┴──┴─┘
 
 Đã lưu kết quả vào file: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_RK
-4/ODE_2D_RK4.csv
-Đã lưu kết quả Phase vào 
-file: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_RK
-4/ODE_2D_RK4_Phase.csv
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_RK4/ODE_
+2D_RK4.csv
+Đã lưu kết quả Phase vào file:
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_RK4/ODE_
+2D_RK4_Phase.csv
 Đã lưu đồ thị vào file: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_RK
-4/graph_ODE_2D_RK4.png
-Đã lưu đồ thị Phase vào 
-file: 
-/Users/doanvinhnhan/pps_ck/
-runners/../output/ODE_2D_RK
-4/graph_ODE_2D_RK4_Phase.pn
-g
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_RK4/grap
+h_ODE_2D_RK4.png
+Đã lưu đồ thị Phase vào file: 
+/Users/doanvinhnhan/pps_ck/run
+ners/../output/ODE_2D_RK4/grap
+h_ODE_2D_RK4_Phase.png

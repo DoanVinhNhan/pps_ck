@@ -1,0 +1,281 @@
+[
+    {
+        "method_name": "Tích phân Hình thang (Trapezoidal Rule for Integration)",
+        "inputs": [
+            "Hàm số f(x) liên tục trên đoạn [a, b] hoặc bảng dữ liệu rời rạc (x_i, y_i) với các mốc cách đều",
+            "Cận lấy tích phân: giới hạn dưới a và giới hạn trên b",
+            "Số khoảng chia n (số nguyên dương) hoặc bước lưới h (với điều kiện h = (b-a)/n)"
+        ],
+        "intermediate_values": [
+            "Bước lưới h = (b - a) / n",
+            "Giá trị hàm tại hai đầu mút: y_0 = f(a) và y_n = f(b)",
+            "Tổng các giá trị hàm tại các điểm nút bên trong: Sum_inner = y_1 + y_2 + ... + y_{n-1}",
+            "Giá trị lớn nhất của trị tuyệt đối đạo hàm cấp 2 (M_2 = max|f''(x)|) trên đoạn [a, b] (dùng để đánh giá sai số lý thuyết)"
+        ],
+        "outputs": [
+            "Giá trị gần đúng của tích phân xác định I_h",
+            "Đánh giá sai số của phép tính (nếu có yêu cầu): |Rn| <= (M_2 * (b-a) * h^2) / 12"
+        ],
+        "algorithm": [
+            "Bước 1: Xác định các thông số đầu vào. Nếu cho n, tính bước lưới h = (b - a) / n. Nếu cho bảng số liệu, xác định h từ khoảng cách giữa các mốc x.",
+            "Bước 2: Xác định hoặc tính toán giá trị hàm y_i tại các mốc x_i = a + i*h (với i chạy từ 0 đến n).",
+            "Bước 3: Tính tổng các giá trị hàm tại các điểm nút bên trong khoảng phân hoạch: S = y_1 + y_2 + ... + y_{n-1}.",
+            "Bước 4: Áp dụng công thức nhân tử (công thức hình thang tổng quát): I_h = (h / 2) * (y_0 + 2 * S + y_n).",
+            "Bước 5 (Tùy chọn): Đánh giá sai số nếu biết đạo hàm cấp 2 của f(x). Sai số |I - I_h| <= [M_2 * (b - a) * h^2] / 12."
+        ]
+    },
+    {
+        "method_name": "Tích phân Simpson (Simpson's Rule)",
+        "inputs": [
+            "Hàm số f(x) cần tính tích phân hoặc bảng dữ liệu rời rạc (x_i, y_i)",
+            "Khoảng tích phân [a, b] (với x_0 = a, x_2n = b)",
+            "Số khoảng chia N = 2n (yêu cầu N phải là số chẵn) hoặc bước lưới h"
+        ],
+        "intermediate_values": [
+            "Bước lưới h = (b - a) / (2n)",
+            "Giá trị hàm tại hai đầu mút: y_0 và y_{2n}",
+            "sigma_1: Tổng các giá trị hàm tại các nút có chỉ số lẻ (y_1, y_3, ..., y_{2n-1})",
+            "sigma_2: Tổng các giá trị hàm tại các nút có chỉ số chẵn (y_2, y_4, ..., y_{2n-2})",
+            "Giá trị tích phân tính theo bước h (I_h) và bước h/2 (I_{h/2}) nếu cần đánh giá sai số theo Runge"
+        ],
+        "outputs": [
+            "Kết quả tích phân gần đúng I",
+            "Đánh giá sai số (theo công thức lý thuyết M4 hoặc nguyên lý Runge)"
+        ],
+        "algorithm": [
+            "Bước 1: Chia đoạn [a, b] thành 2n khoảng bằng nhau. Tính bước lưới h = (b - a) / (2n).",
+            "Bước 2: Xác định các mốc nội suy x_k = x_0 + k*h và tính giá trị hàm số y_k = f(x_k) với k chạy từ 0 đến 2n.",
+            "Bước 3: Tính tổng các giá trị tại chỉ số lẻ: sigma_1 = y_1 + y_3 + ... + y_{2n-1}.",
+            "Bước 4: Tính tổng các giá trị tại chỉ số chẵn (loại trừ y_0 và y_{2n}): sigma_2 = y_2 + y_4 + ... + y_{2n-2}.",
+            "Bước 5: Áp dụng công thức Simpson: I ≈ (h / 3) * (y_0 + 4 * sigma_1 + 2 * sigma_2 + y_{2n}).",
+            "Bước 6: (Tùy chọn) Đánh giá sai số theo nguyên lý Runge: Sai số ≈ |I_h - I_{h/2}| / 15."
+        ]
+    },
+    {
+        "method_name": "Tích phân Newton-Cotes"
+    },
+    {
+        "method_name": "Euler Hiện (Explicit Euler for ODE)",
+        "inputs": [
+            "Phương trình vi phân thường cấp 1: y' = f(x, y) (hoặc hệ phương trình x' = f(t, x, y), y' = g(t, x, y))",
+            "Điều kiện ban đầu: y(x_0) = y_0 xác định tại điểm bắt đầu x_0",
+            "Đoạn tính toán: [x_0, X] (hoặc [t_0, T])",
+            "Bước lưới h (khoảng cách giữa các mốc tính toán) hoặc số lượng mốc chia N (h = (X - x_0) / N)"
+        ],
+        "intermediate_values": [
+            "Mốc lưới hiện tại: x_i",
+            "Giá trị nghiệm gần đúng hiện tại: y_i",
+            "Giá trị đạo hàm (hệ số góc) tại điểm hiện tại: k = f(x_i, y_i)"
+        ],
+        "outputs": [
+            "Dãy các giá trị nghiệm gần đúng y_0, y_1, ..., y_n tương ứng với các mốc x_0, x_1, ..., x_n",
+            "Sai số cắt cụt địa phương (Local Truncation Error) bậc O(h^2)",
+            "Đồ thị đường gấp khúc Euler xấp xỉ đường cong nghiệm"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo các giá trị ban đầu x = x_0, y = y_0.",
+            "Bước 2: Xác định bước lưới h và số bước lặp n (nếu chưa có).",
+            "Bước 3: Lặp i từ 0 đến n-1:",
+            "   a. Tính giá trị hàm f tại mốc hiện tại: k = f(x_i, y_i).",
+            "   b. Tính giá trị y tại mốc tiếp theo bằng công thức Euler hiện: y_{i+1} = y_i + h * k.",
+            "   c. Cập nhật mốc lưới tiếp theo: x_{i+1} = x_i + h.",
+            "Bước 4: Lưu trữ cặp giá trị (x_{i+1}, y_{i+1}) vào danh sách kết quả.",
+            "Bước 5: Kết thúc vòng lặp và trả về tập nghiệm gần đúng."
+        ]
+    },
+    {
+        "method_name": "Euler Ẩn (Implicit Euler for ODE)",
+        "inputs": [
+            "Hàm vế phải f(x, y) của phương trình vi phân y' = f(x, y)",
+            "Điều kiện ban đầu y(x_0) = y_0",
+            "Bước lưới h (hoặc khoảng [a, b] và số điểm chia N để tính h = (b-a)/N)",
+            "Các tham số dừng cho vòng lặp giải phương trình phi tuyến (nếu f(x, y) phi tuyến): dung sai sai số (epsilon) và số lần lặp tối đa"
+        ],
+        "intermediate_values": [
+            "Phương trình đại số cần giải tại mỗi bước n: y_{n+1} = y_n + h * f(x_{n+1}, y_{n+1})",
+            "Giá trị dự báo ban đầu y^{(0)}_{n+1} (thường dùng Euler hiện để dự báo)",
+            "Các giá trị xấp xỉ y^{(k)}_{n+1} trong quá trình lặp (lặp đơn hoặc Newton-Raphson) để tìm nghiệm phương trình ẩn"
+        ],
+        "outputs": [
+            "Dãy các giá trị mốc x: x_0, x_1, ..., x_N",
+            "Dãy các giá trị nghiệm gần đúng y: y_0, y_1, ..., y_N",
+            "Đảm bảo tính ổn định tuyệt đối (A-stable) cho các bài toán phương trình vi phân cứng (stiff equations) mà Euler hiện không giải quyết tốt"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo các giá trị ban đầu: x_0, y_0, bước h, sai số cho phép epsilon.",
+            "Bước 2: Lặp n từ 0 đến N-1 (với N là tổng số bước):",
+            "   2.1. Xác định mốc thời gian tiếp theo: x_{n+1} = x_n + h.",
+            "   2.2. Thiết lập phương trình ẩn cần giải: g(y_{n+1}) = y_{n+1} - y_n - h * f(x_{n+1}, y_{n+1}) = 0.",
+            "   2.3. Giải phương trình phi tuyến để tìm y_{n+1}:",
+            "        - Khởi tạo giá trị đoán y^{(0)} (ví dụ: y^{(0)} = y_n + h*f(x_n, y_n) theo Euler hiện).",
+            "        - Lặp k = 0, 1, 2... cho đến khi |y^{(k+1)} - y^{(k)}| < epsilon:",
+            "          + Cách 1 (Lặp đơn): y^{(k+1)} = y_n + h * f(x_{n+1}, y^{(k)}).",
+            "          + Cách 2 (Newton-Raphson): y^{(k+1)} = y^{(k)} - [y^{(k)} - y_n - h*f(x_{n+1}, y^{(k)})] / [1 - h * df/dy(x_{n+1}, y^{(k)})].",
+            "   2.4. Gán nghiệm tìm được cho y_{n+1}.",
+            "Bước 3: Lưu cặp giá trị (x_{n+1}, y_{n+1}) vào danh sách kết quả.",
+            "Bước 4: Kết thúc vòng lặp và trả về tập nghiệm."
+        ]
+    },
+    {
+        "method_name": "Hình thang cho PTVP (Trapezoidal Method for ODE)",
+        "inputs": [
+            "Hàm vế phải f(t, y) của phương trình vi phân thường y' = f(t, y) (hoặc hệ phương trình)",
+            "Giá trị ban đầu t_0 và y_0 (tại t = t_0, y = y_0)",
+            "Bước lưới h (khoảng cách giữa các mốc thời gian t_{n+1} - t_n)",
+            "Khoảng tính toán [t_0, t_end] hoặc số lượng bước lặp N"
+        ],
+        "intermediate_values": [
+            "Giá trị đạo hàm tại mốc cũ: k_1 = f(t_n, y_n)",
+            "Giá trị dự báo (Predictor) y_{n+1}^{(0)}: Thường được tính bằng phương pháp Euler hiện (y_n + h*k_1) để làm giá trị khởi tạo cho vế phải phương trình ẩn",
+            "Giá trị đạo hàm tại mốc mới (ước tính): k_2 = f(t_{n+1}, y_{n+1}^{(k)}) trong quá trình lặp",
+            "Sai số cục bộ của phương pháp: O(h^3) (sai số toàn cục O(h^2))"
+        ],
+        "outputs": [
+            "Mảng giá trị thời gian t: [t_0, t_1, ..., t_N]",
+            "Mảng giá trị nghiệm gần đúng y: [y_0, y_1, ..., y_N] tương ứng với các mốc thời gian",
+            "Miền ổn định tuyệt đối (nếu được yêu cầu phân tích): Re(z) < 0 với z = h*lambda"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo t = t_0, y = y_0.",
+            "Bước 2: Lặp n từ 0 đến N-1 (hoặc cho đến khi t >= t_end):",
+            "  a. Tính đạo hàm tại điểm hiện tại: f_n = f(t_n, y_n).",
+            "  b. Dự báo giá trị y_{n+1} ban đầu (thường dùng Euler hiện): y_{pre} = y_n + h * f_n.",
+            "  c. Thiết lập t_{n+1} = t_n + h.",
+            "  d. Giải phương trình ẩn để tìm y_{n+1} (thường dùng lặp đơn hoặc dùng một bước hiệu chỉnh):",
+            "     - Tính đạo hàm tại điểm dự báo: f_{pre} = f(t_{n+1}, y_{pre}).",
+            "     - Áp dụng công thức hình thang (Corrector): y_{n+1} = y_n + (h / 2) * (f_n + f_{pre}).",
+            "  e. (Tùy chọn) Lặp lại bước d (thay y_{pre} bằng y_{n+1} vừa tính) cho đến khi sai số giữa hai lần lặp nhỏ hơn epsilon cho trước để đảm bảo tính chính xác của nghiệm ẩn.",
+            "  f. Cập nhật y_n = y_{n+1}, t_n = t_{n+1} và lưu kết quả.",
+            "Bước 3: Kết thúc vòng lặp và trả về tập nghiệm."
+        ]
+    },
+    {
+        "method_name": "Runge-Kutta 4 (RK4)",
+        "inputs": [
+            "Hệ phương trình vi phân thường dạng chuẩn: x' = f(t, x, y) và y' = g(t, x, y)",
+            "Các tham số hệ số phương trình (alpha, beta, K, C...) phụ thuộc vào dữ liệu cá nhân sinh viên (số thứ tự, ngày sinh)",
+            "Điều kiện ban đầu: t_0, x(t_0), y(t_0)",
+            "Khoảng tính toán [t_0, T] và bước lưới h (thường là h=0.1 hoặc h=0.01)"
+        ],
+        "intermediate_values": [
+            "Các hệ số độ dốc k_1, k_2, k_3, k_4 tính toán tại mỗi bước lặp",
+            "Bộ giá trị nghiệm tại các điểm lưới đầu tiên (thường là 3 hoặc 4 điểm đầu) để làm dữ liệu khởi chạy cho phương pháp đa bước (Adams-Bashforth/Adams-Moulton)"
+        ],
+        "outputs": [
+            "Bảng giá trị nghiệm gần đúng tại các mốc cụ thể (thường yêu cầu 3-6 điểm đầu và 3 điểm cuối khoảng tính toán)",
+            "Đồ thị đường cong nghiệm theo thời gian (t, x), (t, y) và đồ thị quỹ đạo pha (x, y)",
+            "Kết luận về tính chất nghiệm (tính ổn định, xu hướng tiệm cận, hoặc chu kỳ của hệ sinh thái/mạch điện)"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo t = t_0, x = x_0, y = y_0 và xác định số bước lặp N = (T - t_0)/h.",
+            "Bước 2: Lặp i từ 0 đến N-1, tại mỗi bước thực hiện tính các hệ số K:",
+            "   k_1x = h * f(t_i, x_i, y_i);  k_1y = h * g(t_i, x_i, y_i)",
+            "   k_2x = h * f(t_i + h/2, x_i + k_1x/2, y_i + k_1y/2);  k_2y = h * g(t_i + h/2, x_i + k_1x/2, y_i + k_1y/2)",
+            "   k_3x = h * f(t_i + h/2, x_i + k_2x/2, y_i + k_2y/2);  k_3y = h * g(t_i + h/2, x_i + k_2x/2, y_i + k_2y/2)",
+            "   k_4x = h * f(t_i + h, x_i + k_3x, y_i + k_3y);  k_4y = h * g(t_i + h, x_i + k_3x, y_i + k_3y)",
+            "Bước 3: Cập nhật giá trị nghiệm tiếp theo:",
+            "   x_{i+1} = x_i + (1/6) * (k_1x + 2*k_2x + 2*k_3x + k_4x)",
+            "   y_{i+1} = y_i + (1/6) * (k_1y + 2*k_2y + 2*k_3y + k_4y)",
+            "   t_{i+1} = t_i + h",
+            "Bước 4: Lưu trữ hoặc in ra các giá trị x_{i+1}, y_{i+1} tại các mốc chỉ định (ví dụ: i=0,1,2 và i=N-3,N-2,N-1).",
+            "Bước 5: Vẽ đồ thị dựa trên toàn bộ dữ liệu thu được."
+        ]
+    },
+    {
+        "method_name": "Runge-Kutta 2 (RK2)",
+        "inputs": [
+            "Hàm số f(x, y) từ phương trình vi phân y' = f(x, y)",
+            "Giá trị ban đầu (x_0, y_0) (Bài toán Cauchy)",
+            "Bước lưới h (khoảng cách giữa các mốc tính toán)",
+            "Điểm cuối cần tính X hoặc số lượng bước lặp N",
+            "Tham số tự do alpha_2 (thường nằm trong khoảng (0, 1]) để xác định biến thể cụ thể (ví dụ: alpha_2 = 1 cho Heun, alpha_2 = 1/2 cho Euler cải tiến/Trung điểm)"
+        ],
+        "intermediate_values": [
+            "Các hệ số cấu trúc của phương pháp: r_1, r_2, alpha_2, beta_11 (thỏa mãn hệ phương trình điều kiện: r_1 + r_2 = 1; r_2 * alpha_2 = 1/2; r_2 * beta_11 = 1/2)",
+            "Hệ số độ dốc k_1 = h * f(x_n, y_n)",
+            "Hệ số độ dốc k_2 = h * f(x_n + alpha_2 * h, y_n + beta_11 * k_1)"
+        ],
+        "outputs": [
+            "Giá trị nghiệm gần đúng y_{n+1} tại bước tiếp theo",
+            "Tập hợp các điểm nghiệm (x_i, y_i) trên đoạn tính toán",
+            "Cấp chính xác của phương pháp (Cấp 2, sai số cục bộ O(h^3), sai số toàn cục O(h^2))",
+            "Miền ổn định tuyệt đối (thường được xác định qua đa thức ổn định bậc 2)"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo các giá trị ban đầu x = x_0, y = y_0.",
+            "Bước 2: Xác định các tham số cấu trúc r_1, r_2, alpha_2, beta_11. Các bộ tham số phổ biến: (Heun: r_1=r_2=0.5, alpha_2=beta_11=1); (Điểm giữa: r_1=0, r_2=1, alpha_2=beta_11=0.5); (Ralston: r_1=1/3, r_2=2/3, alpha_2=beta_11=3/4).",
+            "Bước 3: Lặp lại các bước sau cho đến khi x >= X (hoặc đủ số bước N):",
+            "   3a. Tính k_1 = h * f(x, y)",
+            "   3b. Tính k_2 = h * f(x + alpha_2 * h, y + beta_11 * k_1)",
+            "   3c. Tính giá trị y mới: y_new = y + r_1 * k_1 + r_2 * k_2",
+            "   3d. Cập nhật x: x = x + h",
+            "   3e. Gán y = y_new và lưu kết quả (x, y).",
+            "Bước 4: Trả về kết quả nghiệm gần đúng."
+        ]
+    },
+    {
+        "method_name": "Adams-Bashforth-Moulton (AB-AM)",
+        "inputs": [
+            "Hàm f(x, y) từ phương trình vi phân y' = f(x, y)",
+            "Điều kiện ban đầu: x0 và y0",
+            "Khoảng tính toán [x0, X] hoặc số bước lặp N",
+            "Bước lưới h (khoảng cách giữa các nút lưới)",
+            "Bậc của phương pháp k (trong tài liệu thường yêu cầu k=4)"
+        ],
+        "intermediate_values": [
+            "Các giá trị khởi động y1, y2, ..., y(k-1) (thường được tính bằng phương pháp Runge-Kutta bậc 4)",
+            "Mảng các giá trị đạo hàm fi = f(xi, yi) tại k nút lưới gần nhất để dùng cho công thức truy hồi",
+            "Giá trị dự báo (Predictor) y_p tại bước n+1 tính bằng công thức Adams-Bashforth",
+            "Giá trị đạo hàm dự báo f_p = f(x(n+1), y_p)",
+            "Giá trị hiệu chỉnh (Corrector) y_c tại bước n+1 tính bằng công thức Adams-Moulton",
+            "Sai số cục bộ ước tính giữa dự báo và hiệu chỉnh (để kiểm soát bước h nếu cần)"
+        ],
+        "outputs": [
+            "Mảng giá trị nghiệm y tại các nút lưới x",
+            "Đồ thị đường cong nghiệm y(x)",
+            "Đồ thị so sánh sai lệch nghiệm (nếu có yêu cầu so sánh với RK4 hoặc nghiệm chính xác)"
+        ],
+        "algorithm": [
+            "Bước 1: Khởi tạo. Xác định hàm f(x,y), các giá trị ban đầu x0, y0, bước h và số bước k (thường là 4).",
+            "Bước 2: Khởi động (Starting Step). Tính k-1 giá trị đầu tiên (y1, y2, y3 nếu k=4) sử dụng phương pháp một bước có độ chính xác cao như Runge-Kutta bậc 4 (RK4). Tính và lưu trữ các giá trị đạo hàm f0, f1, f2, f3 tương ứng.",
+            "Bước 3: Lặp dự báo - hiệu chỉnh (Predictor-Corrector Loop). Với n chạy từ k-1 đến N-1:",
+            "  3a. Dự báo (Predictor - Adams Bashforth): Tính giá trị tạm thời y(n+1)_p dựa trên các f đã biết. Ví dụ với k=4 (AB4): y(n+1)_p = y_n + (h/24) * [55*f_n - 59*f(n-1) + 37*f(n-2) - 9*f(n-3)].",
+            "  3b. Đánh giá (Evaluation): Tính đạo hàm tại điểm dự báo: f(n+1)_p = f(x(n+1), y(n+1)_p).",
+            "  3c. Hiệu chỉnh (Corrector - Adams Moulton): Tính lại giá trị y(n+1)_c chính xác hơn. Ví dụ với k=4 (AM4): y(n+1)_c = y_n + (h/24) * [9*f(n+1)_p + 19*f_n - 5*f(n-1) + f(n-2)].",
+            "  3d. Cập nhật (Update): Lưu y(n+1) = y(n+1)_c. Tính f(n+1) chính thức (nếu cần lặp lại bước hiệu chỉnh) hoặc cập nhật mảng f để chuẩn bị cho bước tiếp theo.",
+            "Bước 4: Kết thúc. Trả về mảng các giá trị x và y tìm được."
+        ]
+    },
+    {
+        "method_name": "Giải bài toán biên (Finite Difference Method)",
+        "inputs": [
+            "Phương trình vi phân cấp 2 dạng tổng quát: [p(x)u'(x)]' - q(x)u(x) = -f(x) (hoặc + Cr(x) = 0)",
+            "Các hàm hệ số: p(x), q(x) và hàm vế phải f(x) (hoặc r(x))",
+            "Đoạn tính toán [a, b] (ví dụ: [0, 3])",
+            "Số khoảng chia N hoặc bước lưới h = (b-a)/N",
+            "Điều kiện biên tại x=a (Loại 1: u(a)=α; Loại 2: p(a)u'(a)=-μ; hoặc Loại 3: p(a)u'(a) - σ₁u(a) = -μ₁)",
+            "Điều kiện biên tại x=b (Loại 1: u(b)=β; Loại 2: p(b)u'(b)=-μ; hoặc Loại 3: p(b)u'(b) - σ₂u(b) = -μ₂)"
+        ],
+        "intermediate_values": [
+            "Các nút lưới: x_i = a + i*h với i = 0...N",
+            "Giá trị hàm p(x) tại các điểm giữa nút: p_{i ± 1/2} = p(x_i ± h/2)",
+            "Các hệ số của ma trận 3 đường chéo tại nút trong (i=1..N-1): A_i = p_{i-1/2}, C_i = p_{i+1/2}, B_i = A_i + C_i + h^2*q(x_i)",
+            "Vế phải phương trình rời rạc tại nút trong: d_i = -h^2 * f(x_i)",
+            "Các hệ số điều chỉnh tại biên (hàng 0 và hàng N) dựa trên loại điều kiện biên (sử dụng công thức sai phân xấp xỉ đạo hàm)"
+        ],
+        "outputs": [
+            "Vectơ nghiệm gần đúng u = [u_0, u_1, ..., u_N] tại các nút lưới",
+            "Đồ thị đường cong nghiệm u(x) theo x",
+            "Giá trị lớn nhất (Max) và nhỏ nhất (Min) của nghiệm trên lưới"
+        ],
+        "algorithm": [
+            "Bước 1: Rời rạc hóa miền tính. Chia đoạn [a, b] thành N đoạn bằng nhau với bước h = (b-a)/N. Xác định các nút x_i.",
+            "Bước 2: Tính toán các hệ số trung gian. Tính p_{i-1/2}, p_{i+1/2}, q_i = q(x_i), f_i = f(x_i) cho i từ 1 đến N-1.",
+            "Bước 3: Xây dựng hệ phương trình tại các nút trong (i = 1...N-1). Thiết lập phương trình sai phân trung tâm: A_i*u_{i-1} - B_i*u_i + C_i*u_{i+1} = -h^2*f_i. Trong đó: A_i = p_{i-1/2}; C_i = p_{i+1/2}; B_i = A_i + C_i + h^2*q_i.",
+            "Bước 4: Xử lý điều kiện biên để thiết lập phương trình đầu (tại i=0) và cuối (tại i=N).",
+            "   - Nếu biên loại 1 (u(a)=α): Thiết lập u_0 = α (hoặc phương trình 1*u_0 + 0*u_1 = α).",
+            "   - Nếu biên loại 2 hoặc 3 (có đạo hàm): Sử dụng công thức sai phân xấp xỉ đạo hàm (ví dụ: p(a)u'(a) ≈ p_{1/2}*(u_1 - u_0)/h - (h/2)*(q_0*u_0 - f_0)) để xây dựng phương trình liên hệ u_0 và u_1.",
+            "Bước 5: Giải hệ phương trình đại số tuyến tính dạng ma trận 3 đường chéo (Tridiagonal Matrix) thu được bằng thuật toán đuổi (Thomas Algorithm) để tìm vectơ nghiệm u."
+        ]
+    }
+]
