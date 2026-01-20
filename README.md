@@ -1,30 +1,34 @@
-# Numerical Methods for ODEs & Integration
+# Numerical Methods Project
 
-This project implements various numerical methods for solving Ordinary Differential Equations (ODEs) and Numerical Integration. It allows for high-precision calculations, detailed step-by-step reporting, and automatic error estimation.
+This project implements a comprehensive suite of numerical methods for solving Ordinary Differential Equations (ODEs), Numerical Integration, Interpolation, and Regression. It is designed for high-precision calculations, offering detailed step-by-step reporting, automatic error estimation, and visualization.
 
 ## Structure
 
-The project is now organized into logical sub-modules:
+The project is organized into logical sub-modules within `methods/` for core algorithms and `runners/` for execution scripts:
 
-- **`methods/`**: Core implementations of numerical algorithms.
+- **`methods/`**: Core implementations.
   - **`ODE/`**: Solvers for Ordinary Differential Equations.
     - Euler methods (Explicit, Implicit)
     - Runge-Kutta methods (RK2, RK3, RK4)
-    - Adams-Bashforth and Adams-Moulton methods
-    - Finite Difference Method (FDM) for BVPs
+    - Adams-Bashforth and Adams-Moulton methods (Predictor-Corrector)
+    - Finite Difference Method (FDM) for Boundary Value Problems
   - **`Integration/`**: Numerical Integration for **Discrete Data Points**.
     - Trapezoidal Rule
     - Simpson's 1/3 Rule
     - Newton-Cotes
   - **`Function_Integration/`**: Numerical Integration for **Mathematical Functions**.
-    - Trapezoidal Rule (Function Mode)
-    - Simpson's 1/3 Rule (Function Mode)
-    - Newton-Cotes (Function Mode)
+    - Solvers for defined functions $f(x)$ with automatic convergence checking.
+  - **`Interpolation/`**:
+    - Spline Interpolation (Natural Cubic Spline)
+  - **`Regression/`**:
+    - Least Squares Regression (Generic basis functions)
 
-- **`runners/`**: Scripts to execute the methods and visualize results.
-  - **`ODE/`**: Runners for ODE problems (1D, 2D, FDM).
+- **`runners/`**: Scripts to execute the methods and generate reports/plots.
+  - **`ODE/`**: Runners for 1D/2D ODEs and FDM.
   - **`Integration/`**: Runners for integration from CSV data.
-  - **`Function_Integration/`**: Runners for integration of direct functions $f(x)$.
+  - **`Function_Integration/`**: Runners for function-based integration.
+  - **`Interpolation/`**: Runners for interpolation tasks.
+  - **`Regression/`**: Runners for curve fitting and regression.
 
 ## Installation
 
@@ -37,25 +41,27 @@ The project is now organized into logical sub-modules:
 
 ## Usage
 
+Run the scripts located in the `runners/` directory. Results (CSV, Text Reports, Plots) will be generated in the `output/` directory.
+
 ### 1. Ordinary Differential Equations (ODE)
 
-Run runners located in `runners/ODE/` to solve 1D or 2D ODE problems or BVPs.
+Solve Initial Value Problems (IVP) or Boundary Value Problems (BVP).
 
 **Examples:**
 ```bash
 # Rate 4 Runge-Kutta for 1D ODE
 python runners/ODE/1D_RK4.py
 
-# System of ODEs (2D)
+# System of ODEs (2D) - e.g., Predator-Prey models
 python runners/ODE/2D_RK4.py
 
-# Finite Difference Method
+# Finite Difference Method for BVP
 python runners/ODE/FiniteDifferenceMethod.py
 ```
 
 ### 2. Numerical Integration (Data Mode)
 
-Use these runners when you have discrete data points (e.g., from a CSV file).
+Calculate integrals when you only have discrete data points (e.g., experimental data in a CSV file).
 
 **Examples:**
 ```bash
@@ -68,21 +74,41 @@ python runners/Integration/Trapezoidal.py
 
 ### 3. Numerical Integration (Function Mode)
 
-Use these runners when you want to integrate a defined mathematical function $f(x)$ (e.g., $e^x$, $\sin(x)$).
+Integrate defined mathematical functions $f(x)$ (e.g., $e^x, \sin(x)$) with automatic error control.
 
 **Examples:**
 ```bash
 # Simpson's Rule for f(x)
 python runners/Function_Integration/Simpson.py
 
-# Newton-Cotes for f(x)
+# Newton-Cotes via Function
 python runners/Function_Integration/NewtonCotes.py
 ```
 
-**Key Features:**
+### 4. Interpolation
 
-*   **Detailed Table**: Displays calculation details for the first iteration (Weights $C_i$, Terms).
-*   **Automatic Convergence**: Iteratively refines the grid (doubling $N$) until the estimated error meets `EPSILON`.
-*   **Runge Error Estimation**: Uses Runge's principle to estimate error between iterations.
-*   **Rich Output**: Beautiful terminal output with tables and panels.
-*   **Reports**: Automatically saves results to `.txt` and `.csv` files in `output/` directory.
+Construct new data points within the range of a discrete set of known data points.
+
+**Examples:**
+```bash
+# Cubic Spline Interpolation
+python runners/Interpolation/Spline.py
+```
+
+### 5. Regression
+
+Find the best-fitting curve through a set of data points using the method of least squares.
+
+**Examples:**
+```bash
+# Least Squares Regression (Generic)
+python runners/Regression/LeastSquares.py
+```
+
+## Key Features
+
+*   **Automatic Convergence**: Ideally refines grids or steps until estimated errors meet a specified `EPSILON`.
+*   **Runge Error Estimation**: Uses Runge's principle for robust error checking.
+*   **Detailed Reporting**: Generates rich `.txt` reports with intermediate steps and `.csv` files for raw data.
+*   **Visualization**: Automatically generates Matplotlib graphs for visual verification of results.
+*   **Polished Output**: Uses `rich` for beautiful, readable terminal output.
