@@ -63,5 +63,12 @@ def solve_ode_1d_rk4(f, t0, x0, h, T):
 
     return {
         "t": t_values,
-        "x": x_values
+        "x": x_values,
+        "convergence_info": {
+            "method_name": "Runge-Kutta Order 4 (Classic RK4)",
+            "approximation_order": "O(h^4)",
+            "stability_region": "|1 + z + z^2/2 + z^3/6 + z^4/24| <= 1",
+            "stability_function": "R(z) = 1 + z + z^2/2 + z^3/6 + z^4/24",
+            "conditionally_stable": True
+        }
     }

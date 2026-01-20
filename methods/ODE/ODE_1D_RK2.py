@@ -64,5 +64,12 @@ def rk2_ode_1d(f, t0, x0, h, T):
         
     return {
         "t": t_values.tolist(),
-        "x": x_values.tolist()
+        "x": x_values.tolist(),
+        "convergence_info": {
+            "method_name": "Runge-Kutta Order 2 (Heun's Method)",
+            "approximation_order": "O(h^2)",
+            "stability_region": "|1 + z + z^2/2| <= 1",
+            "stability_function": "R(z) = 1 + z + 0.5*z^2",
+            "conditionally_stable": True
+        }
     }

@@ -99,6 +99,15 @@ console.print(Panel(Text(f"Hàm f(t,x,y): y\nHàm g(t,x,y): -x\nKhoảng t: [{t0
 # 3.2. Tính toán
 result = solve_ode_2d_ab_am(f, g, t0, x0, y0, h, T, s=s_steps)
 
+# 3.2b Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
 # 3.3. In công thức
 console.print("\n[bold yellow]Áp dụng ODE_2D_ABs_AMs Ta có:[/bold yellow]")
 if s_steps == 4:
@@ -146,9 +155,9 @@ for i in indices:
     else:
         table.add_row(
             str(i),
-            f"{t_vals[i]:.4f}",
-            f"{x_vals[i]:.6f}",
-            f"{y_vals[i]:.6f}"
+            f"{t_vals[i]:.6g}",
+            f"{x_vals[i]:.8g}",
+            f"{y_vals[i]:.8g}"
         )
 
 console.print(table)

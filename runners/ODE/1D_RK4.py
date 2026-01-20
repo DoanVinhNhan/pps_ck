@@ -45,6 +45,15 @@ input_desc = (
 )
 console.print(Panel(input_desc, title="Đề bài", style="bold cyan"))
 
+# 3.1b Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
 # 3.2. In công thức
 console.print("\n[bold yellow]Áp dụng ODE_1D_RK4 Ta có:[/bold yellow]")
 formula_text = (
@@ -81,12 +90,12 @@ for i in range(num_points):
         k3 = h * f(t_curr + 0.5 * h, x_curr + 0.5 * k2)
         k4 = h * f(t_curr + h, x_curr + k3)
         row_data = [
-            str(i), f"{t_curr:.4f}", f"{x_curr:.6f}",
-            f"{k1:.6f}", f"{k2:.6f}", f"{k3:.6f}", f"{k4:.6f}"
+            str(i), f"{t_curr:.6g}", f"{x_curr:.8g}",
+            f"{k1:.8g}", f"{k2:.8g}", f"{k3:.8g}", f"{k4:.8g}"
         ]
     else:
         # Dòng cuối cùng không tính k cho bước tiếp theo
-        row_data = [str(i), f"{t_curr:.4f}", f"{x_curr:.6f}", "-", "-", "-", "-"]
+        row_data = [str(i), f"{t_curr:.6g}", f"{x_curr:.8g}", "-", "-", "-", "-"]
     
     rows.append(row_data)
 

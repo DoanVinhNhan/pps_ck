@@ -44,7 +44,7 @@ def run():
         common_f = result_dict['intermediate_values'].get('initial_common_factor', 0)
         
         if detailed:
-            console.print(Panel(f"Bảng chi tiết (Lần lặp 1)\nCommon Factor = {common_f:.9f}", title="Chi tiết", border_style="yellow"))
+            console.print(Panel(f"Bảng chi tiết (Lần lặp 1)\nCommon Factor = {common_f:.11g}", title="Chi tiết", border_style="yellow"))
             dt = Table()
             dt.add_column("i")
             dt.add_column("x")
@@ -54,7 +54,7 @@ def run():
             
             display = detailed if len(detailed) < 15 else detailed[:5] + detailed[-5:]
             for row in display:
-                dt.add_row(str(row['i']), f"{row['x']:.6f}", f"{row['f']:.6f}", f"{row['C']:.5f}", f"{row['term']:.6f}")
+                dt.add_row(str(row['i']), f"{row['x']:.8g}", f"{row['f']:.8g}", f"{row['C']:.7g}", f"{row['term']:.8g}")
             if len(detailed) >= 15:
                 console.print(f"[yellow]... {len(detailed)-10} rows hidden ...[/yellow]")
             console.print(dt)
@@ -70,14 +70,14 @@ def run():
     
     hist_data = []
     for step in hist:
-        err_str = f"{step['error']:.2e}" if step['error'] else "-"
-        t_hist.add_row(str(step['iter']), str(step['N']), f"{step['h']:.6f}", f"{step['result']:.9f}", err_str)
+        err_str = f"{step['error']:.4g}" if step['error'] else "-"
+        t_hist.add_row(str(step['iter']), str(step['N']), f"{step['h']:.8g}", f"{step['result']:.11g}", err_str)
         hist_data.append(step)
     console.print(t_hist)
     
     final_res = result_dict['result']
     final_err = result_dict['error_estimate']
-    console.print(Panel(f"Kết quả cuối cùng: {final_res:.9f}\nSai số ước lượng: {final_err:.2e}", title="KẾT QUẢ", style="bold green"))
+    console.print(Panel(f"Kết quả cuối cùng: {final_res:.11g}\nSai số ước lượng: {final_err:.4g}", title="KẾT QUẢ", style="bold green"))
     
     df = pd.DataFrame(hist_data)
     csv_path = os.path.join(output_dir, "convergence.csv")

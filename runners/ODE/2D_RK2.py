@@ -54,7 +54,10 @@ def run():
     console.print(Panel(input_info, title="[bold cyan]Đề bài[/bold cyan]", expand=False))
 
     # --- Thực thi thuật toán ---
-    t_vals, x_vals, y_vals = ode_2d_rk2(f, g, t0, x0, y0, h, T)
+    result = ode_2d_rk2(f, g, t0, x0, y0, h, T)
+    t_vals = result['t']
+    x_vals = result['x']
+    y_vals = result['y']
 
     # --- In Công thức ---
     console.print("\n[bold yellow]Áp dụng ODE_2D_RK2 Ta có:[/bold yellow]")
@@ -105,11 +108,11 @@ def run():
             
             return (
                 str(idx), 
-                f"{ti:.4f}", f"{xi:.6f}", f"{yi:.6f}", 
-                f"{k1x:.4f}", f"{k1y:.4f}", f"{k2x:.4f}", f"{k2y:.4f}"
+                f"{ti:.6g}", f"{xi:.8g}", f"{yi:.8g}", 
+                f"{k1x:.6g}", f"{k1y:.6g}", f"{k2x:.6g}", f"{k2y:.6g}"
             )
         else:
-            return (str(idx), f"{ti:.4f}", f"{xi:.6f}", f"{yi:.6f}", "-", "-", "-", "-")
+            return (str(idx), f"{ti:.6g}", f"{xi:.8g}", f"{yi:.8g}", "-", "-", "-", "-")
 
     # Logic in 5 dòng đầu và 5 dòng cuối
     if num_points <= 10:

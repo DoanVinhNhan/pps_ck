@@ -52,5 +52,12 @@ def solve_ode_euler_forward_1d(f, t0, x0, h, T):
 
     return {
         "t": t_values,
-        "x": x_values
+        "x": x_values,
+        "convergence_info": {
+            "method_name": "Euler Explicit (Forward Euler)",
+            "approximation_order": "O(h)",
+            "stability_region": "|1 + z| <= 1 (Hình tròn tâm (-1, 0) bán kính 1 trên mặt phẳng phức)",
+            "stability_function": "R(z) = 1 + z",
+            "conditionally_stable": True
+        }
     }

@@ -159,5 +159,11 @@ def solve_bvp_fdm(p_func, q_func, f_func, a, b, N, bc_a, bc_b):
         "x_nodes": x_nodes,
         "u_values": u_solution,
         "log": process_log,
-        "h": h
+        "h": h,
+        "convergence_info": {
+            "method_name": "Finite Difference Method (BVP, 2nd Order Central Difference)",
+            "approximation_order": "O(h^2)",
+            "stability_condition": "Ổn định nếu ma trận hệ số thỏa mãn điều kiện đường chéo trội (thường yêu cầu q(x) >= 0 hoặc bước lưới đủ nhỏ).",
+            "matrix_solver": "Thomas Algorithm (TDMA) - O(N)"
+        }
     }

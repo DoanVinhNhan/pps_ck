@@ -86,6 +86,16 @@ def main():
     
     console.print(Panel(param_text, title="Đề bài", title_align="left", border_style="blue"))
 
+    # 2.1 Info hội tụ
+    if "convergence_info" in result:
+        info = result["convergence_info"]
+        info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+        info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+        info_text += f"\nUnconditionally Stable: {info.get('unconditionally_stable', 'N/A')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
     # 2. Thực thi thuật toán
     result = solve_ode_2d_implicit_euler(f, g, t0, x0, y0, h, T)
     t_vals = result['t']
@@ -114,16 +124,16 @@ def main():
     n = len(t_vals)
     if n <= 10:
         for i in range(n):
-            table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+            table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
     else:
         # 5 dòng đầu
         for i in range(5):
-            table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+            table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
         # Dòng rút gọn
         table.add_row("...", "...", "...", "...")
         # 5 dòng cuối
         for i in range(n - 5, n):
-            table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+            table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
 
     console.print(table)
 

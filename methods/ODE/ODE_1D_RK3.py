@@ -61,5 +61,12 @@ def solve_ode_1d_rk3(f, t0, x0, h, T):
         
     return {
         "t": t_values,
-        "x": x_values
+        "x": x_values,
+        "convergence_info": {
+            "method_name": "Runge-Kutta Order 3 (Kutta's 3rd order)",
+            "approximation_order": "O(h^3)",
+            "stability_region": "|1 + z + z^2/2 + z^3/6| <= 1",
+            "stability_function": "R(z) = 1 + z + z^2/2 + z^3/6",
+            "conditionally_stable": True
+        }
     }

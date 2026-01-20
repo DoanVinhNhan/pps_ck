@@ -64,7 +64,17 @@ def ode_1d_implicit_euler(f, t0, x0, h, T):
         t_values.append(t_current)
         x_values.append(x_current)
         
-    return t_values, x_values
+    return {
+        "t": t_values,
+        "x": x_values,
+        "convergence_info": {
+            "method_name": "Euler Implicit (Backward Euler)",
+            "approximation_order": "O(h)",
+            "stability_region": "|1 - z| >= 1 (Miền ổn định tuyệt đối là bên ngoài hình tròn mở tâm (1, 0) bán kính 1)",
+            "stability_function": "R(z) = 1 / (1 - z)",
+            "unconditionally_stable": True
+        }
+    }
 
 # ==============================================================================
 # 3. PHẦN CHẠY VÀ TRÌNH BÀY KẾT QUẢ (MAIN RUNNER)
@@ -111,16 +121,16 @@ def main():
     
     for step in range(MAX_ITER_DISPLAY):
         t_next = t_curr + H
-        console.print(f"\n[bold magenta]Tính toán tại bước i = {step}: Từ t_{step}={t_curr:.2f} sang t_{step+1}={t_next:.2f}[/bold magenta]")
+        console.print(f"\n[bold magenta]Tính toán tại bước i = {step}: Từ t_{step}={t_curr:.6g} sang t_{step+1}={t_next:.6g}[/bold magenta]")
         
         # Tính giá trị hàm tại điểm cũ
         f_curr = f_func(t_curr, x_curr)
-        console.print(f"Ta có: f(t_{step}, x_{step}) = {FUNCTION_EXPRESSION.replace('x', f'{x_curr:.4f}')} = {f_curr:.4f}")
+        console.print(f"Ta có: f(t_{step}, x_{step}) = {FUNCTION_EXPRESSION.replace('x', f'{x_curr:.6g}')} = {f_curr:.6g}")
         
         # Dự báo
         x_guess = x_curr + H * f_curr
         console.print(f"Dự báo giá trị khởi tạo (Euler hiện):")
-        console.print(f"    x_{{next}}^(0) = {x_curr:.4f} + {H} * ({f_curr:.4f}) = [bold]{x_guess:.6f}[/bold]")
+        console.print(f"    x_{{next}}^(0) = {x_curr:.6g} + {H} * ({f_curr:.6g}) = [bold]{x_guess:.8g}[/bold]")
         
         # Bảng lặp
         table_iter = Table(title=f"Bảng quá trình lặp tìm nghiệm ẩn x_{step+1}", box=box.SIMPLE)
@@ -142,10 +152,10 @@ def main():
             
             table_iter.add_row(
                 str(k), 
-                f"{x_k:.6f}", 
-                f"{f_next_k:.6f}", 
-                f"[green]{x_k_new:.6f}[/green]", 
-                f"{diff:.2e}"
+                f"{x_k:.8g}", 
+                f"{f_next_k:.8g}", 
+                f"[green]{x_k_new:.8g}[/green]", 
+                f"{diff:.4g}"
             )
             
             if diff < tol:
@@ -154,7 +164,7 @@ def main():
             x_k = x_k_new
             
         console.print(table_iter)
-        console.print(f"Vì sai số < {tol}, ta chấp nhận nghiệm: [bold yellow]x_{step+1} = {x_k:.6f}[/bold yellow]")
+        console.print(f"Vì sai số < {tol}, ta chấp nhận nghiệm: [bold yellow]x_{step+1} = {x_k:.8g}[/bold yellow]")
         
         # Cập nhật cho vòng sau
         t_curr = t_next
@@ -163,7 +173,19 @@ def main():
     console.print("\n[italic]... (Các bước tiếp theo thực hiện tương tự) ...[/italic]")
 
     # --- 3.3. CHẠY TOÀN BỘ THUẬT TOÁN VÀ HIỂN THỊ KẾT QUẢ CUỐI ---
-    t_res, x_res = ode_1d_implicit_euler(f_func, T0, X0, H, T_END)
+    result = ode_1d_implicit_euler(f_func, T0, X0, H, T_END)
+    t_res = result['t']
+    x_res = result['x']
+
+    # 3.3b Info hội tụ
+    if "convergence_info" in result:
+        info = result["convergence_info"]
+        info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+        info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+        info_text += f"\nUnconditionally Stable: {info.get('unconditionally_stable', 'N/A')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
 
     # Tạo bảng kết quả tổng hợp
     table_res = Table(title="BẢNG KẾT QUẢ TỔNG HỢP", box=box.ROUNDED)
@@ -172,7 +194,7 @@ def main():
     table_res.add_column("Nghiệm x(t)", justify="center", style="green")
 
     for i, (t, x) in enumerate(zip(t_res, x_res)):
-        table_res.add_row(str(i), f"{t:.2f}", f"{x:.6f}")
+        table_res.add_row(str(i), f"{t:.6g}", f"{x:.8g}")
 
     console.print("\n")
     console.print(table_res)

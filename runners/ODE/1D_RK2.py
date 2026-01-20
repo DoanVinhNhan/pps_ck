@@ -48,6 +48,15 @@ def main():
     t_values = result['t']
     x_values = result['x']
 
+    # 2.1 Info hội tụ
+    if "convergence_info" in result:
+        info = result["convergence_info"]
+        info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+        info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
     # 3. In Công thức
     console.print("\n[bold cyan]Áp dụng ODE_1D_RK2 Ta có:[/bold cyan]")
     formula = (
@@ -78,13 +87,13 @@ def main():
             k1 = f(t_curr, x_curr)
             x_pred = x_curr + h * k1
             k2 = f(t_curr + h, x_pred)
-            k1_str = f"{k1:.4f}"
-            k2_str = f"{k2:.4f}"
+            k1_str = f"{k1:.6g}"
+            k2_str = f"{k2:.6g}"
         else:
             k1_str = "-"
             k2_str = "-"
             
-        rows.append([str(i), f"{t_curr:.4f}", f"{x_curr:.4f}", k1_str, k2_str])
+        rows.append([str(i), f"{t_curr:.6g}", f"{x_curr:.6g}", k1_str, k2_str])
 
     # Logic in rút gọn: 5 dòng đầu + ... + 5 dòng cuối
     total_rows = len(rows)

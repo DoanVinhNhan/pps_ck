@@ -81,6 +81,15 @@ input_info = f"""
 """
 console.print(Panel(input_info, title="[bold blue]Đề bài[/bold blue]", expand=False))
 
+# 2.1b Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
 # 2.2 In Công thức
 console.print("\n[bold green]Áp dụng ODE_2D_RK3 Ta có:[/bold green]")
 formula = """
@@ -121,10 +130,10 @@ for i in range(num_steps):
         
         table.add_row(
             str(i),
-            f"{ti:.4f}", f"{xi:.6f}", f"{yi:.6f}",
-            f"{k1:.4f}", f"{l1:.4f}",
-            f"{k2:.4f}", f"{l2:.4f}",
-            f"{k3:.4f}", f"{l3:.4f}"
+            f"{ti:.6g}", f"{xi:.8g}", f"{yi:.8g}",
+            f"{k1:.6g}", f"{l1:.6g}",
+            f"{k2:.6g}", f"{l2:.6g}",
+            f"{k3:.6g}", f"{l3:.6g}"
         )
     elif i == 5:
         table.add_row("...", "...", "...", "...", "...", "...", "...", "...", "...", "...")
@@ -132,7 +141,7 @@ for i in range(num_steps):
 # Thêm dòng kết quả cuối cùng (không có k, l)
 table.add_row(
     str(num_steps), 
-    f"{t_res[-1]:.4f}", f"{x_res[-1]:.6f}", f"{y_res[-1]:.6f}", 
+    f"{t_res[-1]:.6g}", f"{x_res[-1]:.8g}", f"{y_res[-1]:.8g}", 
     "-", "-", "-", "-", "-", "-"
 )
 

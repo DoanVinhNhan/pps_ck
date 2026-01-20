@@ -84,6 +84,15 @@ console.print(f"[bold]Hệ phương trình:[/bold]")
 console.print(f"  dx/dt = {r}x(1 - x/{K}) - {a}xy")
 console.print(f"  dy/dt = -{mu}y + {a}xy")
 
+# 3.1b Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
 # --- 3.2. In công thức ---
 console.print("\n[bold cyan]Áp dụng ODE_2D_Euler_Explicit Ta có:[/bold cyan]")
 formula_text = (
@@ -104,17 +113,17 @@ table.add_column("y (Predator)", justify="right")
 n_points = len(t_vals)
 # In 5 dòng đầu
 for i in range(min(5, n_points)):
-    table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+    table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
 
 # In dòng rút gọn nếu dữ liệu dài
 if n_points > 10:
     table.add_row("...", "...", "...", "...")
     # In 5 dòng cuối
     for i in range(n_points - 5, n_points):
-        table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+        table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
 elif n_points > 5:
     for i in range(5, n_points):
-        table.add_row(str(i), f"{t_vals[i]:.4f}", f"{x_vals[i]:.6f}", f"{y_vals[i]:.6f}")
+        table.add_row(str(i), f"{t_vals[i]:.6g}", f"{x_vals[i]:.8g}", f"{y_vals[i]:.8g}")
 
 console.print(table)
 

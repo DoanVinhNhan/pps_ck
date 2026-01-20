@@ -67,5 +67,12 @@ def euler_forward_2d(f, g, t0, x0, y0, h, T):
     return {
         "t": t_values,
         "x": x_values,
-        "y": y_values
+        "y": y_values,
+        "convergence_info": {
+            "method_name": "Euler Explicit (Forward Euler) 2D",
+            "approximation_order": "O(h)",
+            "stability_region": "|1 + z| <= 1 (Hình tròn tâm (-1, 0) bán kính 1 trên mặt phẳng phức, áp dụng cho trị riêng của Jacobian)",
+            "stability_function": "R(z) = 1 + z",
+            "conditionally_stable": True
+        }
     }

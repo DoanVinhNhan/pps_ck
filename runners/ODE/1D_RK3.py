@@ -33,6 +33,10 @@ result = solve_ode_1d_rk3(f, t0, x0, h, T)
 t_res = result['t']
 x_res = result['x']
 
+# Add printing of convergence_info inside main/output section, or right here if console is available. 
+# But console is defined later. Let's move this to section 3 TERMINAL OUTPUT.
+
+
 # Tái tạo dữ liệu chi tiết cho bảng (tính lại k1, k2, k3 để hiển thị)
 table_data = []
 for i in range(len(t_res) - 1):
@@ -72,6 +76,15 @@ Bước nhảy h: {h}
 """
 console.print(Panel(input_info.strip(), title="[bold cyan]Đề bài[/bold cyan]", expand=False))
 
+# 3.1b Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
 # 3.2. In Tiêu đề áp dụng
 console.print("\n[bold yellow]Áp dụng ODE_1D_RK3 Ta có:[/bold yellow]")
 
@@ -109,12 +122,12 @@ for row in display_rows:
     else:
         table.add_row(
             str(row["iter"]),
-            f"{row['t']:.4f}",
-            f"{row['x']:.6f}",
-            f"{row['k1']:.6f}",
-            f"{row['k2']:.6f}",
-            f"{row['k3']:.6f}",
-            f"{row['x_next']:.6f}"
+            f"{row['t']:.6g}",
+            f"{row['x']:.8g}",
+            f"{row['k1']:.8g}",
+            f"{row['k2']:.8g}",
+            f"{row['k3']:.8g}",
+            f"{row['x_next']:.8g}"
         )
 
 console.print(table)

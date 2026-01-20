@@ -1,0 +1,17 @@
+No CSV provided or found. Using default data.
+╭──────────── Input Data ────────────╮
+│ x: [0 1 2 3 4 5]                   │
+│ y: [ 2.1  7.7 13.6 27.2 40.9 61.1] │
+╰────────────────────────────────────╯
+Error for degree 4: Odd degree for now only. Got 4.
+           Spline Interpolation Information           
+┏━━━━━━━━┳━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┳━━━━━━━━━┓
+┃ Degree ┃              Type               ┃ Status  ┃
+┡━━━━━━━━╇━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━╇━━━━━━━━━┩
+│   2    │        Quadratic (Bậc 2)        │ Success │
+│   3    │          Cubic (Bậc 3)          │ Success │
+│   4    │ Odd degree for now only. Got 4. │ Failed  │
+└────────┴─────────────────────────────────┴─────────┘
+Đã xuất file kết quả nội suy (dense grid): 
+/Users/doanvinhnhan/pps_ck/output/Spline_Interpolation/Spline_Interpolation.csv
+Đã lưu đồ thị: /Users/doanvinhnhan/pps_ck/output/Spline_Interpolation/graph_Spline_Interpolation.png

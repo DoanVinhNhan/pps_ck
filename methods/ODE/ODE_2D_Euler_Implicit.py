@@ -83,5 +83,12 @@ def solve_ode_2d_implicit_euler(f, g, t0, x0, y0, h, T):
     return {
         "t": t_list,
         "x": x_list,
-        "y": y_list
+        "y": y_list,
+        "convergence_info": {
+            "method_name": "Euler Implicit (Backward Euler) 2D",
+            "approximation_order": "O(h)",
+            "stability_region": "|1 - z| >= 1 (Miền ổn định tuyệt đối là bên ngoài hình tròn mở tâm (1, 0) bán kính 1)",
+            "stability_function": "R(z) = 1 / (1 - z)",
+            "unconditionally_stable": True
+        }
     }

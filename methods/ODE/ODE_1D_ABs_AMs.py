@@ -85,4 +85,14 @@ def solve_ode_1d_ab_am(f, t0, x0, h, T):
         x_values[i+1] = x_next_corr
         t_values[i+1] = t_next
 
-    return t_values.tolist(), x_values.tolist()
+    return {
+        "t": t_values.tolist(),
+        "x": x_values.tolist(),
+        "convergence_info": {
+            "method_name": "Adams-Bashforth-Moulton (Predictor-Corrector) Order 4",
+            "approximation_order": "O(h^4)",
+            "stability_region": "Miền ổn định giới hạn, nằm bên trái trục ảo, lớn hơn AB4 nhưng nhỏ hơn AM4 (Implicit).",
+            "stability_function": "Phức tạp, phụ thuộc vào đa thức đặc trưng của AB4 và AM4.",
+            "conditionally_stable": True
+        }
+    }

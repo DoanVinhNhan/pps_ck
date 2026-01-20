@@ -123,7 +123,7 @@ def run():
         N_first = len(detailed_table) - 1
         console.print(Panel(
             f"I ≈ (Common Factor) * Sum(C_i * g_i)\n"
-            f"Common Factor = h/2 = {common_factor:.9f}", 
+            f"Common Factor = h/2 = {common_factor:.11g}", 
             title=f"Bảng chi tiết (Iteration 1, N={N_first})", 
             border_style="yellow"
         ))
@@ -144,11 +144,11 @@ def run():
         for row in display_rows:
             dt_table.add_row(
                 str(row['i']),
-                f"{row['x']:.6f}",
-                f"{row['f']:.6f}",
-                f"{row['g']:.6f}",
-                f"{row['C']:.1f}", # Raw weight is usually int/simple float
-                f"{row['term']:.6f}"
+                f"{row['x']:.8g}",
+                f"{row['f']:.8g}",
+                f"{row['g']:.8g}",
+                f"{row['C']:.6g}", # Raw weight is usually int/simple float
+                f"{row['term']:.8g}"
             )
         
         if not show_full:
@@ -177,9 +177,9 @@ def run():
         
         iter_num = str(iteration)
         N_step_str = str(N_step)
-        h_step_str = f"{h_step:.6f}"
-        res_step_str = f"{I_val:.8f}"
-        err_step_str = f"{err_val:.8e}" if err_val is not None else "-"
+        h_step_str = f"{h_step:.8g}"
+        res_step_str = f"{I_val:.10g}"
+        err_step_str = f"{err_val:.9g}" if err_val is not None else "-"
         
         table.add_row(iter_num, N_step_str, h_step_str, res_step_str, err_step_str)
         
@@ -210,8 +210,8 @@ def run():
             # Highlight final result and error
             final_I = result_dict['result']
             final_err = result_dict['error_estimate']
-            console.print(f"[bold yellow]Kết quả tích phân (I_h):[/bold yellow] {final_I:.9f}")
-            console.print(f"[bold red]Sai số ước lượng:[/bold red] {final_err:.9e}")
+            console.print(f"[bold yellow]Kết quả tích phân (I_h):[/bold yellow] {final_I:.11g}")
+            console.print(f"[bold red]Sai số ước lượng:[/bold red] {final_err:.10g}")
         else:
              console.print("[yellow]Không tìm thấy thông tin đánh giá lưới thưa (có thể do N quá nhỏ hoặc không tìm được k).[/yellow]")
     

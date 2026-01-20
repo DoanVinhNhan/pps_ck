@@ -51,6 +51,15 @@ def main():
     console.print(f"• Điều kiện ban đầu: x({T0}) = {X0}")
     console.print("")
 
+    # 3.1b Info hội tụ
+    if "convergence_info" in result:
+        info = result["convergence_info"]
+        info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+        info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
     # 3.2. Tiêu đề phương pháp
     console.print("[bold green]Áp dụng ODE_1D_Euler_Explicit Ta có:[/bold green]")
 
@@ -83,9 +92,9 @@ def main():
         
         table.add_row(
             str(i), 
-            f"{t_val:.6f}", 
-            f"{x_val:.6f}", 
-            f"{slope_val:.6f}"
+            f"{t_val:.8g}", 
+            f"{x_val:.8g}", 
+            f"{slope_val:.8g}"
         )
 
     console.print(table)

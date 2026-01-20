@@ -72,4 +72,14 @@ def ode_1d_implicit_euler(f, t0, x0, h, T):
         t_values.append(t_current)
         x_values.append(x_current)
         
-    return t_values, x_values
+    return {
+        "t": t_values,
+        "x": x_values,
+        "convergence_info": {
+            "method_name": "Euler Implicit (Backward Euler)",
+            "approximation_order": "O(h)",
+            "stability_region": "|1 - z| >= 1 (Miền ổn định tuyệt đối là bên ngoài hình tròn mở tâm (1, 0) bán kính 1)",
+            "stability_function": "R(z) = 1 / (1 - z)",
+            "unconditionally_stable": True
+        }
+    }

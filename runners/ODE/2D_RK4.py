@@ -100,6 +100,15 @@ def main():
     )
     console.print(Panel(formula, title="Công thức RK4 (Hệ 2 chiều)", border_style="blue"))
 
+    # 3.1b Info hội tụ
+    if "convergence_info" in result:
+        info = result["convergence_info"]
+        info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+        info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
+
     # --- 3.4. In bảng giá trị ---
     console.print(Text("Bảng giá trị", style="bold yellow"))
     
@@ -144,19 +153,19 @@ def main():
              k4_y = h * g(ti + h, xi + k3_x, yi + k3_y)
              
              k_strs = [
-                 f"{k1_x:.4f}", f"{k1_y:.4f}",
-                 f"{k2_x:.4f}", f"{k2_y:.4f}",
-                 f"{k3_x:.4f}", f"{k3_y:.4f}",
-                 f"{k4_x:.4f}", f"{k4_y:.4f}"
+                 f"{k1_x:.6g}", f"{k1_y:.6g}",
+                 f"{k2_x:.6g}", f"{k2_y:.6g}",
+                 f"{k3_x:.6g}", f"{k3_y:.6g}",
+                 f"{k4_x:.6g}", f"{k4_y:.6g}"
              ]
         else:
              k_strs = ["-", "-", "-", "-", "-", "-", "-", "-"]
 
         table.add_row(
             str(i),
-            f"{ti:.4f}",
-            f"{xi:.6f}",
-            f"{yi:.6f}",
+            f"{ti:.6g}",
+            f"{xi:.8g}",
+            f"{yi:.8g}",
             *k_strs
         )
 

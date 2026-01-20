@@ -277,5 +277,58 @@
             "   - Nếu biên loại 2 hoặc 3 (có đạo hàm): Sử dụng công thức sai phân xấp xỉ đạo hàm (ví dụ: p(a)u'(a) ≈ p_{1/2}*(u_1 - u_0)/h - (h/2)*(q_0*u_0 - f_0)) để xây dựng phương trình liên hệ u_0 và u_1.",
             "Bước 5: Giải hệ phương trình đại số tuyến tính dạng ma trận 3 đường chéo (Tridiagonal Matrix) thu được bằng thuật toán đuổi (Thomas Algorithm) để tìm vectơ nghiệm u."
         ]
+    },
+    {
+        "method_name": "Hồi quy Bình phương Tối thiểu (Least Squares Regression)",
+        "inputs": [
+            "Bộ dữ liệu mẫu (x_i, y_i)",
+            "Dạng hàm hồi quy mong muốn (Tuyến tính, Bậc 2, Hàm mũ, Hàm lũy thừa, Hàm lượng giác)"
+        ],
+        "intermediate_values": [
+            "Các biến đổi tuyến tính hóa (Linearization) nếu cần (ví dụ: ln(y) cho hàm mũ)",
+            "Ma trận thiết kế X và vectơ Y",
+            "Các hệ số hồi quy tìm được (a, b, c...)",
+            "Tổng bình phương sai số (RSS)"
+        ],
+        "outputs": [
+            "Phương trình hồi quy cụ thể y = f(x)",
+            "Hệ số xác định R^2 đánh giá độ phù hợp của mô hình",
+            "Đồ thị đường hồi quy cùng với các điểm dữ liệu gốc"
+        ],
+        "algorithm": [
+            "Bước 1: Xác định dạng hàm hồi quy dựa trên yêu cầu hoặc phân tích sơ bộ dữ liệu.",
+            "Bước 2: Thực hiện biến đổi biến số để đưa về dạng tuyến tính Y = A*X + B nếu cần (Linearization).",
+            "Bước 3: Xây dựng hệ phương trình chuẩn (Normal Equations) hoặc sử dụng phân rã QR/SVD để giải bài toán cực tiểu hóa tổng bình phương sai số: min ||Y - X*beta||^2.",
+            "Bước 4: Giải hệ phương trình để tìm các tham số tối ưu (beta).",
+            "Bước 5: Tính toán các chỉ số đánh giá sai số (RSS, R^2, RMSE).",
+            "Bước 6: Trả về phương trình và kết quả đánh giá."
+        ]
+    },
+    {
+        "method_name": "Nội suy Spline (Spline Interpolation)",
+        "inputs": [
+            "Bộ dữ liệu mốc nội suy (x_i, y_i) đã được sắp xếp tăng dần theo x",
+            "Bậc của đa thức Spline (Bậc 2, 3 hoặc 4)"
+        ],
+        "intermediate_values": [
+            "Các phương trình ràng buộc về tính liên tục của hàm số tại các nút",
+            "Các phương trình ràng buộc về tính liên tục của đạo hàm (cấp 1, cấp 2...) tại các nút",
+            "Điều kiện biên (Ví dụ: Spline tự nhiên - đạo hàm cấp 2 tại biên bằng 0)"
+        ],
+        "outputs": [
+            "Hàm Spline nội suy trơn tru đi qua tất cả các điểm mốc",
+            "Đồ thị đường cong Spline",
+            "Giá trị nội suy tại các điểm bất kỳ trong khoảng tính toán"
+        ],
+        "algorithm": [
+            "Bước 1: Sắp xếp dữ liệu đầu vào theo chiều tăng dần của x.",
+            "Bước 2: Xác định số khoảng chia (n-1 khoảng) và bậc k của Spline.",
+            "Bước 3: Xây dựng hệ phương trình tuyến tính dựa trên các điều kiện:",
+            "   - Spline đi qua các điểm mốc (nút).",
+            "   - Tính liên tục của đạo hàm đến cấp k-1 tại các nút trong.",
+            "   - Các điều kiện biên bổ sung để khép kín hệ phương trình.",
+            "Bước 4: Giải hệ phương trình để tìm các hệ số của các đa thức trên từng khoảng con.",
+            "Bước 5: Xây dựng hàm Spline ghép nối từ các đa thức con."
+        ]
     }
 ]

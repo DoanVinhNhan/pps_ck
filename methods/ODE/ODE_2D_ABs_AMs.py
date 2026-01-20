@@ -133,5 +133,12 @@ def solve_ode_2d_ab_am(f, g, t0, x0, y0, h, T, s=4):
     return {
         "t": t_values.tolist(),
         "x": x_values.tolist(),
-        "y": y_values.tolist()
+        "y": y_values.tolist(),
+        "convergence_info": {
+            "method_name": f"Adams-Bashforth-Moulton (Predictor-Corrector) Order {s} 2D",
+            "approximation_order": f"O(h^{s})",
+            "stability_region": f"Miền ổn định phụ thuộc bậc s={s}, nằm bên trái trục ảo (Predictor-Corrector có miền ổn định tốt hơn AB nhưng kém hơn AM).",
+            "stability_function": "Phức tạp, phụ thuộc vào đa thức đặc trưng.",
+            "conditionally_stable": True
+        }
     }

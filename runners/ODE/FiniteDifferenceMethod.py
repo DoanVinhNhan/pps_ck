@@ -94,8 +94,20 @@ def run():
     )
     console.print(Panel(info, title="Finite Difference Method - Parameters", border_style="cyan"))
     
+    # 3.1 Info hội tụ
+    # Note: result is not available yet, move this after result is calculated or use known info
+    # Better to wait until result is available.
+    
     # 4. Solve
     result = solve_bvp_fdm(p_func, q_func, f_func, A, B, N_DEFAULT, bc_a, bc_b)
+
+    if "convergence_info" in result:
+        c_info = result["convergence_info"]
+        info_text = f"Method Name: {c_info.get('method_name', 'Unknown')}\n"
+        info_text += f"Order: {c_info.get('approximation_order', 'Unknown')}\n"
+        info_text += f"Stability Condition: {c_info.get('stability_condition', 'Unknown')}\n"
+        info_text += f"Matrix Solver: {c_info.get('matrix_solver', 'Unknown')}"
+        console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
     
     x_nodes = result['x_nodes']
     u_values = result['u_values']
@@ -117,12 +129,12 @@ def run():
         table.add_column("Error", justify="right", style="red")
         
     for i in range(len(x_nodes)):
-        row_data = [str(i), f"{x_nodes[i]:.4f}", f"{u_values[i]:.6f}"]
+        row_data = [str(i), f"{x_nodes[i]:.6g}", f"{u_values[i]:.8g}"]
         if exact_values is not None:
             exact = exact_values[i]
             error = abs(u_values[i] - exact)
-            row_data.append(f"{exact:.6f}")
-            row_data.append(f"{error:.2e}")
+            row_data.append(f"{exact:.8g}")
+            row_data.append(f"{error:.4g}")
         table.add_row(*row_data)
         
     console.print(table)

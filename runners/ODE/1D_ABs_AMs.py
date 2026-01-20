@@ -23,7 +23,9 @@ h = 0.1         # Bước nhảy
 T = 2.0         # Thời điểm kết thúc
 
 # --- Execution ---
-t_values, x_values = solve_ode_1d_ab_am(f, t0, x0, h, T)
+result = solve_ode_1d_ab_am(f, t0, x0, h, T)
+t_values = result['t']
+x_values = result['x']
 
 # --- Terminal Output ---
 console = Console(record=True)
@@ -35,6 +37,15 @@ os.makedirs(output_dir, exist_ok=True)
 # 1. In tiêu đề Đề bài
 input_info = f"Hàm số f(t, x): x - t^2 + 1\nKhoảng thời gian: [{t0}, {T}]\nBước nhảy h: {h}\nGiá trị ban đầu x({t0}): {x0}"
 console.print(Panel(input_info, title="Đề bài", style="bold cyan", border_style="cyan"))
+
+# 1.1 Info hội tụ
+if "convergence_info" in result:
+    info = result["convergence_info"]
+    info_text = f"Method Name: {info.get('method_name', 'Unknown')}\n"
+    info_text += f"Order: {info.get('approximation_order', 'Unknown')}\n"
+    info_text += f"Stability Region: {info.get('stability_region', 'Unknown')}\n"
+    info_text += f"Stability Function: {info.get('stability_function', 'Unknown')}"
+    console.print(Panel(info_text, title="[bold magenta]Hội tụ & Ổn định[/bold magenta]", expand=False))
 
 # 2. In tiêu đề Áp dụng
 console.print("\n[bold yellow]Áp dụng ODE_1D_ABs_AMs Ta có:[/bold yellow]")
@@ -59,8 +70,8 @@ for i in range(num_points):
     if i < 5 or i >= num_points - 5:
         table.add_row(
             str(i), 
-            f"{t_values[i]:.4f}", 
-            f"{x_values[i]:.6f}"
+            f"{t_values[i]:.6g}", 
+            f"{x_values[i]:.8g}"
         )
     elif i == 5:
         table.add_row("...", "...", "...")
