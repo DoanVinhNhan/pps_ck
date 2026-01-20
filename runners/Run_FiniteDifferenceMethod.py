@@ -15,71 +15,51 @@ from methods.FiniteDifferenceMethod import solve_bvp_fdm
 
 console = Console(record=True)
 
+# --- Input Parameters ---
+SELECTED_CASE = 2  # 1: Simple Poisson, 2: Euler-Cauchy (Variable Coeffs)
+
 # --- Problem Definitions ---
 
-# Example Problem: u'' + p(x)u' - q(x)u = -f(x)
-# Let's solve: -u'' + u = 0  => u'' - u = 0 (p=-1, q=1, f=0? No wait, check form)
-# Method Form: [p(x)u']' - q(x)u = -f(x)
-# If p(x) = 1, then u'' - q(x)u = -f(x)
+# Case 1: Simple Poisson (u'' = -1)
+def p1(x): return 1.0
+def q1(x): return 0.0
+def f1(x): return 1.0 
+def exact1(x): return x * (1 - x) / 2.0
 
-# Let's pick a problem with a known solution for verification.
-# Problem: u'' = -1, u(0)=0, u(1)=0
-# Solution: u(x) = x(1-x)/2
-# Transform to [p u'] - q u = -f
-# p(x) = 1 => u''
-# q(x) = 0
-# f(x) = -1 (since -f(x) = u'' => -(-1) = 1? No u'' = -1 corresponds to -f(x) = -1 => f(x) = 1)
-# Checking: [1 * u']' - 0*u = -1 => u'' = -1. Correct. So f(x) = 1.
+# Case 2: Euler-Cauchy with Source (Variable Coefficients)
+# Eq: [x u']' - (1/x)u = -4x^2
+def p2(x): return x
+def q2(x): return 1.0/x
+def f2(x): return -4.0 * x**2
+def exact2(x): return x/6.0 + 4.0/(3.0*x) + x**3/2.0
 
-def p_func(x): return 1.0
-def q_func(x): return 0.0 # Simple Poisson equation
-def f_func(x): return 1.0 # u'' = -1
-
-# Domain
-A = 0.0
-B = 1.0
-N_DEFAULT = 10
-
-# --- Boundary Condition Cases ---
-# Format: (alpha, beta, gamma) => alpha*u + beta*u' = gamma
-
-def get_boundary_conditions(case_id):
+def get_problem_setup(case_id):
     """
-    Trả về điều kiện biên dựa trên case_id đã chọn.
+    Trả về cấu hình bài toán: (p, q, f, a, b, N, bc_a, bc_b, exact_func, desc)
     """
     if case_id == 1:
-        # Case 1: Dirichlet thuần (u(0)=0, u(1)=0)
-        # 1*u + 0*u' = 0
+        # Simple Poisson: u'' = -1, u(0)=0, u(1)=0
         return (
-            (1.0, 0.0, 0.0), # Left
-            (1.0, 0.0, 0.0), # Right
-            "Dirichlet (u(0)=0, u(1)=0)"
+            p1, q1, f1, 
+            0.0, 1.0, 10,
+            (1.0, 0.0, 0.0), # u(0)=0
+            (1.0, 0.0, 0.0), # u(1)=0
+            exact1,
+            "Simple Poisson: u'' = -1, u(0)=u(1)=0"
         )
     elif case_id == 2:
-        # Case 2: Mixed (u(0)=0, u'(1)=0) - Sợi dây cố định 1 đầu, tự do 1 đầu?
-        # Left: 1*u + 0*u' = 0
-        # Right: 0*u + 1*u' = 0
+        # Complex Euler-Cauchy: u(1)=2, u(2)=5
         return (
-            (1.0, 0.0, 0.0),
-            (0.0, 1.0, 0.0),
-            "Mixed (u(0)=0, u'(1)=0)"
-        )
-    elif case_id == 3:
-        # Case 3: Robin (u(0) - u'(0) = 0, u(1) + u'(1) = 0)
-        # Left: 1*u - 1*u' = 0
-        # Right: 1*u + 1*u' = 0
-        return (
-            (1.0, -1.0, 0.0),
-            (1.0, 1.0, 0.0),
-            "Robin (u-u'=0 @0, u+u'=0 @1)"
+            p2, q2, f2,
+            1.0, 2.0, 20,
+            (1.0, 0.0, 2.0),
+            (1.0, 0.0, 5.0),
+            exact2,
+            "Variable Coeffs (Euler-Cauchy): [x u']' - (1/x)u = 4x^2"
         )
     else:
         # Default to Case 1
-        return (
-            (1.0, 0.0, 0.0),
-            (1.0, 0.0, 0.0),
-            "Dirichlet (Default)"
-        )
+        return get_problem_setup(1)
 
 # --- Execution ---
 
@@ -89,36 +69,29 @@ def run():
     output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
     
-    # 2. Select Case
-    # Normally user input, here hardcoded or loop. Let's run Case 1 (Standard)
-    # TODO: Allow interaction? Detailed Prompt said "THIẾT LẬP 1 TRƯỜNG HỢP (Loại điều kiện biên) LÀ 1 HÀM! RUNNER CHO PHÉP CHỌN"
-    # I will simulate selection by running a default, but structuring it nicely.
-    
-    SELECTED_CASE = 1 
-    bc_a, bc_b, case_desc = get_boundary_conditions(SELECTED_CASE)
+    # 2. Get Problem Setup based on Global Parameter
+    p_func, q_func, f_func, A, B, N, bc_a, bc_b, exact_func, case_desc = get_problem_setup(SELECTED_CASE)
     
     # 3. Print Info
     info = (
-        f"Phương trình: [p(x)u']' - q(x)u = -f(x)\n"
-        f"Với: p(x)=1, q(x)=0, f(x)=1 => u'' = -1\n"
+        f"Phương pháp: Finite Difference Method (FDM)\n"
+        f"Bài toán (Case {SELECTED_CASE}): {case_desc}\n"
         f"Miền: [{A}, {B}]\n"
-        f"Số khoảng N: {N_DEFAULT}\n"
-        f"Trường hợp biên: {case_desc}\n"
+        f"Số khoảng N: {N}\n"
     )
     console.print(Panel(info, title="Finite Difference Method - Parameters", border_style="cyan"))
     
     # 4. Solve
-    result = solve_bvp_fdm(p_func, q_func, f_func, A, B, N_DEFAULT, bc_a, bc_b)
+    result = solve_bvp_fdm(p_func, q_func, f_func, A, B, N, bc_a, bc_b)
     
     x_nodes = result['x_nodes']
     u_values = result['u_values']
     logs = result['log']
     
-    # 5. Exact Solution for Case 1 (u''=-1, u(0)=0, u(1)=0) -> u = 0.5 * (x - x^2)
-    # u = x(1-x)/2
+    # 5. Exact Solution
     exact_values = None
-    if SELECTED_CASE == 1:
-        exact_values = (x_nodes * (1 - x_nodes)) / 2.0
+    if exact_func is not None:
+        exact_values = exact_func(x_nodes)
     
     # 6. Display Table
     table = Table(title=f"Kết quả FDM (Case {SELECTED_CASE})")
