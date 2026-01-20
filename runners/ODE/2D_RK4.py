@@ -34,9 +34,9 @@ T  = 1.0        # Thời điểm kết thúc
 try:
     import sys
     import os
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-    from methods.ODE_2D_RK4 import solve_ode_2d_rk4
+    from methods.ODE.ODE_2D_RK4 import solve_ode_2d_rk4
 except ImportError:
     # Fallback nếu không tìm thấy module (để code có thể chạy demo ngay lập tức)
     def solve_ode_2d_rk4(f, g, t0, x0, y0, h, T):
@@ -70,7 +70,7 @@ def main():
     
     # Define output directory
     method_name = "ODE_2D_RK4"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # --- 3.1. In đề bài ---

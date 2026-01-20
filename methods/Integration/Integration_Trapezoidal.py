@@ -196,8 +196,43 @@ def trapezoidal_integration(x_nodes, y_nodes, a, b, g=None, epsilon=None):
         # Kiểm tra điều kiện dừng
         if epsilon is None:
             final_result = I_curr
-            error_est = None # Không đánh giá sai số nếu chạy 1 lần
-            process_log.append("Không yêu cầu độ chính xác epsilon. Kết thúc sau 1 lần tính.")
+            
+            # Đánh giá sai số lưới thưa
+            sparse_k = None
+            for k in range(2, int(n_curr / 2) + 2):
+                if n_curr % k == 0:
+                    sparse_k = k
+                    break
+            
+            if sparse_k:
+                n_sparse = n_curr // sparse_k
+                process_log.append(f"Chế độ tính 1 lần: Đánh giá sai số với lưới thưa k={sparse_k} (N_sparse={n_sparse}).")
+                
+                # Tạo lưới thưa
+                # integrand_values has n_curr + 1 points
+                g_sparse = integrand_values[::sparse_k]
+                
+                # Trapezoidal formula on sparse grid
+                # I = (h_sparse/2) * (y0 + 2*sum(yi) + yn)
+                sum_inner_sp = np.sum(g_sparse[1:-1]) if n_sparse > 1 else 0
+                h_sparse = h * sparse_k
+                
+                I_sparse = (h_sparse / 2.0) * (g_sparse[0] + 2 * sum_inner_sp + g_sparse[-1])
+                
+                # Trapezoidal error O(h^2)
+                runge_denom = (sparse_k ** 2) - 1.0
+                runge_error = abs(I_curr - I_sparse) / runge_denom
+                
+                error_est = runge_error
+                if intermediate["iteration_history"]:
+                     intermediate["iteration_history"][-1]["error"] = error_est
+
+                process_log.append(f"  -> I_dense (N={n_curr}) = {I_curr:.9f}")
+                process_log.append(f"  -> I_sparse (N={n_sparse}, k={sparse_k}) = {I_sparse:.9f}")
+                process_log.append(f"  -> Sai số ước lượng (|I - I_sp| / {int(runge_denom)}): {error_est:.9e}")
+            else:
+                error_est = 0.0
+                process_log.append("Hoàn thành. Không tìm được lưới thưa phù hợp để đánh giá sai số.")
             break
         
         if iteration > 1:

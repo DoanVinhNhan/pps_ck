@@ -227,9 +227,54 @@ def simpson_integration(x_nodes, y_nodes, a, b, g=None, epsilon=None):
 
         # Kiểm tra điều kiện dừng
         if epsilon is None:
-            # Chế độ tính 1 lần
-            error_est = 0.0 # Không đánh giá sai số lặp
-            computation_log.append("Hoàn thành tính toán (chế độ không lặp).")
+            # Chế độ tính 1 lần - Bổ sung đánh giá sai số lưới thưa
+            # Tìm bước thưa k nhỏ nhất thỏa mãn: k >= 2, N chia hết cho k, N/k chẵn
+            sparse_k = None
+            # Chỉ cần kiểm tra đến N/2, nếu không có thì thôi
+            for k in range(2, int(N / 2) + 2):
+                if N % k == 0:
+                    n_sparse = N // k
+                    if n_sparse % 2 == 0:
+                        sparse_k = k
+                        break
+            
+            if sparse_k:
+                n_sparse = N // sparse_k
+                computation_log.append(f"Chế độ tính 1 lần: Đánh giá sai số với lưới thưa k={sparse_k} (N_sparse={n_sparse}).")
+                
+                # Tạo lưới thưa từ lưới hiện tại
+                # y_grid có N+1 điểm. Lấy bước k -> các điểm 0, k, 2k, ..., N
+                y_sparse = y_grid[::sparse_k]
+                
+                y_start_sp = y_sparse[0]
+                y_end_sp = y_sparse[-1]
+                
+                # Sigma cho Simpson trên lưới thưa
+                # Lưu ý: slice [1:-1:2] lấy các chỉ số lẻ (1, 3...) trong context của mảng y_sparse
+                # slice [2:-1:2] lấy các chỉ số chẵn (2, 4...)
+                sigma_1_sp = np.sum(y_sparse[1:-1:2]) # Các vị trí lẻ 1, 3, ...
+                sigma_2_sp = np.sum(y_sparse[2:-1:2]) # Các vị trí chẵn 2, 4, ...
+                
+                h_sparse = h * sparse_k
+                
+                I_sparse = (h_sparse / 3) * (y_start_sp + 4 * sigma_1_sp + 2 * sigma_2_sp + y_end_sp)
+                
+                # Đánh giá sai số runge: |I_dense - I_sparse| / (k^4 - 1)
+                # Simpson bậc 4 (O(h^4))
+                runge_denom = (sparse_k ** 4) - 1.0
+                runge_error = abs(current_result - I_sparse) / runge_denom
+                
+                error_est = runge_error
+                history_entry["error"] = error_est
+                
+                computation_log.append(f"  -> I_dense (N={N}) = {current_result:.9f}")
+                computation_log.append(f"  -> I_sparse (N={n_sparse}, k={sparse_k}) = {I_sparse:.9f}")
+                computation_log.append(f"  -> Sai số ước lượng (|I - I_sp| / {int(runge_denom)}): {error_est:.9e}")
+                
+            else:
+                error_est = 0.0 # Không đánh giá được
+                computation_log.append("Hoàn thành tính toán. Không tìm được lưới thưa phù hợp (N/k phải chẵn) để đánh giá sai số.")
+                
             break
         else:
             if previous_result is not None:

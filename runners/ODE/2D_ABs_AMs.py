@@ -30,9 +30,9 @@ s_steps = 4     # Số bước của phương pháp (2, 3, hoặc 4)
 try:
   import sys
   import os
-  sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+  sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-  from methods.ODE_2D_ABs_AMs import solve_ode_2d_ab_am
+  from methods.ODE.ODE_2D_ABs_AMs import solve_ode_2d_ab_am
 except ImportError:
     # Fallback nếu không tìm thấy module (để code chạy được trong môi trường test đơn lẻ)
     # Trong thực tế, phần này sẽ được import từ file methods/ODE_2D_ABs_AMs.py
@@ -90,7 +90,7 @@ console = Console(record=True)
 import os
 # Define output directory
 method_name = "ODE_2D_ABs_AMs"
-output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
 os.makedirs(output_dir, exist_ok=True)
 
 # 3.1. In đề bài

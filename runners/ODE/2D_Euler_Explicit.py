@@ -40,7 +40,7 @@ T = 20.0        # Thời điểm kết thúc
 # 2. IMPORT THUẬT TOÁN
 # ==============================================================================
 try:
-    from methods.ODE_2D_Euler_Explicit import euler_forward_2d
+    from methods.ODE.ODE_2D_Euler_Explicit import euler_forward_2d
 except ImportError:
     # Fallback nếu không tìm thấy module (để code có thể chạy demo độc lập)
     def euler_forward_2d(f, g, t0, x0, y0, h, T):
@@ -66,7 +66,7 @@ console = Console(record=True)
 import os
 # Define output directory
 method_name = "ODE_2D_Euler_Explicit"
-output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
 os.makedirs(output_dir, exist_ok=True)
 
 # Thực thi thuật toán

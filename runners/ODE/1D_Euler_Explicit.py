@@ -10,8 +10,8 @@ from rich import box
 # Import thuật toán từ file nguồn
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from methods.ODE_1D_Euler_Explicit import solve_ode_euler_forward_1d
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from methods.ODE.ODE_1D_Euler_Explicit import solve_ode_euler_forward_1d
 
 # ==========================================
 # 1. INPUT PARAMETERS
@@ -40,7 +40,7 @@ x_values = result['x']
 def main():
     console = Console(record=True)
     method_name = "ODE_1D_Euler_Explicit"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # 3.1. In đề bài

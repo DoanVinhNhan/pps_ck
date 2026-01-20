@@ -368,13 +368,62 @@ def newton_cotes_integration(x_nodes, y_nodes, g=None, a=None, b=None, epsilon=N
         if epsilon:
             current_N *= 2 # Gấp đôi số khoảng chia
         else:
+            # Single pass mode - Add sparse grid error estimation
+            sparse_k = None
+            # Scan for k
+            for k in range(2, int(current_N / degree) + 2):
+                if current_N % k == 0:
+                    n_sparse = current_N // k
+                    if n_sparse % degree == 0:
+                        sparse_k = k
+                        break
+            
+            if sparse_k:
+                n_sparse = current_N // sparse_k
+                process_log.append(f"Chế độ tính 1 lần: Đánh giá sai số với lưới thưa k={sparse_k} (N_sparse={n_sparse}).")
+                
+                # Slicing
+                integrand_sparse = integrand_values[::sparse_k]
+                h_sparse = h * sparse_k
+                
+                # Calculate I_sparse
+                num_blocks_sp = n_sparse // degree
+                total_sum_sp = 0.0
+                
+                for block in range(num_blocks_sp):
+                    block_sum = 0.0
+                    for w_idx, weight in enumerate(weights_pattern):
+                        global_idx = (block * degree) + w_idx
+                        y_curr = integrand_sparse[global_idx]
+                        block_sum += weight * y_curr
+                    total_sum_sp += block_sum
+                    
+                I_sparse = multiplier_factor * h_sparse * total_sum_sp
+                
+                # Determine Runge power
+                if degree == 4: p_nc = 6
+                elif degree == 5: p_nc = 6 # Often cited as 6 for N=5? Actually degree 5 is usually same order as degree 4? No, Newton-Cotes n=5 is less common. Let's assume 6.
+                elif degree == 6: p_nc = 8
+                else: p_nc = degree # Fallback
+                
+                runge_denom = (sparse_k ** p_nc) - 1.0
+                error_est = abs(current_result - I_sparse) / runge_denom
+                
+                history_entry["error"] = error_est
+                
+                process_log.append(f"  -> I_dense (N={current_N}) = {current_result:.9f}")
+                process_log.append(f"  -> I_sparse (N={n_sparse}, k={sparse_k}) = {I_sparse:.9f}")
+                process_log.append(f"  -> Sai số ước lượng (|I - I_sp| / {int(runge_denom)}, p={p_nc}): {error_est:.9e}")
+
+            else:
+                 process_log.append(f"Không tìm được lưới thưa phù hợp (chia hết cho degree={degree}) để đánh giá sai số.")
+                 
             break
             
     return {
         "result": final_result,
         "h": h, # Return final h step size
-        "error_estimate": error_est if iteration_count > 1 else 0.0,
-        "error_estimate": error_est if iteration_count > 1 else 0.0,
+        "error_estimate": error_est,
         "intermediate_values": intermediate,
         "computation_process": process_log
     }

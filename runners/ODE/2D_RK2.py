@@ -9,8 +9,8 @@ from rich.text import Text
 from rich.text import Text
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from methods.ODE_2D_RK2 import ode_2d_rk2
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from methods.ODE.ODE_2D_RK2 import ode_2d_rk2
 
 # ==============================================================================
 # 1. INPUT PARAMETERS
@@ -38,7 +38,7 @@ def run():
     import os
     # Define output directory
     method_name = "ODE_2D_RK2"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # --- In Đề bài ---

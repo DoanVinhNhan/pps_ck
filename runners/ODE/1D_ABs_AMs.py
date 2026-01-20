@@ -9,8 +9,8 @@ from rich.text import Text
 # Import algorithm
 import sys
 import os
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from methods.ODE_1D_ABs_AMs import solve_ode_1d_ab_am
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+from methods.ODE.ODE_1D_ABs_AMs import solve_ode_1d_ab_am
 
 # --- Input Parameters ---
 def f(t, x):
@@ -29,7 +29,7 @@ t_values, x_values = solve_ode_1d_ab_am(f, t0, x0, h, T)
 console = Console(record=True)
 import os
 method_name = "ODE_1D_ABs_AMs"
-output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
 os.makedirs(output_dir, exist_ok=True)
 
 # 1. In tiêu đề Đề bài

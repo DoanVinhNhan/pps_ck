@@ -78,7 +78,7 @@ def main():
     console = Console(record=True)
     import os
     method_name = "ODE_1D_Euler_Implicit"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # --- 3.1. HIỂN THỊ ĐỀ BÀI ---

@@ -11,16 +11,16 @@ import os
 import inspect # Added for dynamic g display
 
 # Add parent directory to sys.path to import methods
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from methods.Integration_NewtonCotes import newton_cotes_integration
+from methods.Integration.Integration_NewtonCotes import newton_cotes_integration
 from methods.utils import load_data
 
 console = Console(record=True)
 
 # --- Configuration ---
 CSV_FILE = "20251GKtest2.csv"
-INPUT_PATH = os.path.join(os.path.dirname(__file__), '..', CSV_FILE)
+INPUT_PATH = os.path.join(os.path.dirname(__file__), '../..', CSV_FILE)
 X_COL = "x_i"
 Y_COL = "y_i"
 n = 6
@@ -30,7 +30,7 @@ a_manual = 1.0       # Cận dưới (None -> dùng min(x) từ file)
 b_manual = 12.845    # Cận trên (None -> dùng max(x) từ file)
 
 # Parameters for Convergence Loop
-EPSILON = 1e-6
+EPSILON = None
 MAX_ITER = 15
 
 # --- Define g(f, x) ---
@@ -64,7 +64,7 @@ def run():
 
     # 2. Output Directory
     method_name = "Integration_NewtonCotes"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # 3. Print Problem Info
@@ -87,7 +87,11 @@ def run():
         "Sai số lý thuyết (Big O):\n"
         "  Phụ thuộc vào bậc n (số điểm).\n"
         "  Với n lẻ, bậc chính xác là n.\n"
-        "  Với n chẵn, bậc chính xác là n+1."
+        "  Với n chẵn, bậc chính xác là n+1.\n"
+        "Đánh giá sai số lưới thưa (khi không lặp):\n"
+        "  Error ≈ |I_h - I_{kh}| / (k^p - 1)\n"
+        "  (p=6 cho n=4,5; p=8 cho n=6)"\
+
     )
     console.print(Panel(formula_text, title="Công thức & Sai số", border_style="green"))
 
@@ -188,12 +192,33 @@ def run():
             "Iter": step['iter'], "N": step['N'], "h": step['h'], "Result": step['result'], "Error": step['error'] if step['error'] is not None else np.nan
         })
         
-    console.print(table)
     
-    if history[-1]['error'] is not None and history[-1]['error'] < EPSILON:
-        console.print(f"\n[bold green]Hội tụ sau {len(history)} vòng lặp.[/bold green]")
+    if EPSILON is not None:
+        console.print(table)
+        
+        if history[-1]['error'] is not None and history[-1]['error'] < EPSILON:
+             console.print(f"\n[bold green]Hội tụ sau {len(history)} vòng lặp.[/bold green]")
+        else:
+             console.print("\n[bold red]Dừng lại (có thể chưa hội tụ hoặc đạt giới hạn lặp).[/bold red]")
     else:
-        console.print("\n[bold red]Dừng lại (có thể chưa hội tụ hoặc đạt giới hạn lặp).[/bold red]")
+        # Chế độ tính 1 lần (Sparse Grid) - extract info from logs
+        console.print("\n[bold cyan]--- Kết quả Đánh giá Sai số Lưới thưa ---[/bold cyan]")
+        logs = result_dict.get('computation_process', [])
+        
+        # Extract specific lines
+        sparse_lines = [line for line in logs if "I_dense" in line or "I_sparse" in line or "Sai số ước lượng" in line or "lưới thưa k=" in line]
+        
+        if sparse_lines:
+            sparse_text = "\n".join(sparse_lines).replace("-> ", "")
+            console.print(Panel(sparse_text, title="Chi tiết Đánh giá", border_style="green"))
+            
+            # Highlight final result and error
+            final_I = result_dict['result']
+            final_err = result_dict['error_estimate']
+            console.print(f"[bold yellow]Kết quả tích phân (I_h):[/bold yellow] {final_I:.9f}")
+            console.print(f"[bold red]Sai số ước lượng:[/bold red] {final_err:.9e}")
+        else:
+             console.print("[yellow]Không tìm thấy thông tin đánh giá lưới thưa (có thể do N quá nhỏ hoặc không tìm được k).[/yellow]")
     
     # Final h
     h = result_dict.get('h', (b-a)/history[-1]['N'])

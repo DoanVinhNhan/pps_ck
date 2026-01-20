@@ -27,9 +27,9 @@ T = 1.0         # Thời điểm kết thúc
 try:
     import sys
     import os
-    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+    sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-    from methods.ODE_2D_RK3 import ode_2d_rk3
+    from methods.ODE.ODE_2D_RK3 import ode_2d_rk3
 except ImportError:
     # Fallback nếu không tìm thấy module (để code chạy được demo)
     def ode_2d_rk3(f, g, t0, x0, y0, h, T):
@@ -57,7 +57,7 @@ console = Console(record=True)
 
 # Define output directory
 method_name = "ODE_2D_RK3"
-output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
 os.makedirs(output_dir, exist_ok=True)
 
 # Chạy thuật toán

@@ -31,7 +31,7 @@ T = 5.0         # Thời điểm kết thúc
 # IMPORT ALGORITHM
 # ==============================================================================
 try:
-    from methods.ODE_2D_Euler_Implicit import solve_ode_2d_implicit_euler
+    from methods.ODE.ODE_2D_Euler_Implicit import solve_ode_2d_implicit_euler
 except ImportError:
     # Fallback nếu không tìm thấy module (để code chạy được độc lập khi test)
     def solve_ode_2d_implicit_euler(f, g, t0, x0, y0, h, T):
@@ -74,7 +74,7 @@ def main():
     import os
     # Define output directory
     method_name = "ODE_2D_Euler_Implicit"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
 
     # 1. In tiêu đề Đề bài

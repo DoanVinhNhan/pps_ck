@@ -9,9 +9,9 @@ from rich.table import Table
 from rich.panel import Panel
 
 # Add parent directory to sys.path
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
-from methods.FiniteDifferenceMethod import solve_bvp_fdm
+from methods.ODE.FiniteDifferenceMethod import solve_bvp_fdm
 
 console = Console(record=True)
 
@@ -74,7 +74,7 @@ def get_boundary_conditions(case_id):
 def run():
     # 1. Configuration
     method_name = "Finite_Difference_Method"
-    output_dir = os.path.join(os.path.dirname(__file__), '..', 'output', method_name)
+    output_dir = os.path.join(os.path.dirname(__file__), '../..', 'output', method_name)
     os.makedirs(output_dir, exist_ok=True)
     
     # 2. Select Case
