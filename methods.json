@@ -249,8 +249,8 @@
     {
         "method_name": "Giải bài toán biên (Finite Difference Method)",
         "inputs": [
-            "Phương trình vi phân cấp 2 dạng tổng quát: [p(x)u'(x)]' - q(x)u(x) = -f(x) (hoặc + Cr(x) = 0)",
-            "Các hàm hệ số: p(x), q(x) và hàm vế phải f(x) (hoặc r(x))",
+            "Phương trình vi phân cấp 2 dạng tổng quát: [p(x)u'(x)]' - q(x)u(x) = -f(x)",
+            "Các hàm hệ số: p(x), q(x) và hàm vế phải f(x)",
             "Đoạn tính toán [a, b] (ví dụ: [0, 3])",
             "Số khoảng chia N hoặc bước lưới h = (b-a)/N",
             "Điều kiện biên tại x=a (Loại 1: u(a)=α; Loại 2: p(a)u'(a)=-μ; hoặc Loại 3: p(a)u'(a) - σ₁u(a) = -μ₁)",
